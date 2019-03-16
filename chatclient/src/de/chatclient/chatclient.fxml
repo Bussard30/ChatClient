@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+(C) Copyright 2018 Bussard30.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+
+-->
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
+    <stylesheets>
+        <URL value="@chatclient.css" />
+    </stylesheets>
+   <children>
+      <Pane id="leftside" layoutY="20.0" prefHeight="580.0" prefWidth="210.0" styleClass="leftside">
+         <children>
+            <Text fill="#eeeded" layoutX="41.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nibba">
+               <font>
+                  <Font size="18.0" />
+               </font></Text>
+            <Pane layoutX="60.0" layoutY="446.0" prefHeight="38.0" prefWidth="81.0" />
+            <Pane id="notifications" layoutX="6.0" layoutY="65.0" prefHeight="48.0" prefWidth="200.0" styleClass="notifications" stylesheets="@chatclient.css">
+               <children>
+                  <Pane layoutX="42.0" layoutY="6.0" prefHeight="37.0" prefWidth="117.0">
+                     <children>
+                        <Text fill="#eeeded" layoutX="3.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <FontAwesomeIconView fill="#eeeded" glyphName="COMMENT" layoutX="17.0" layoutY="27.0" scaleX="1.5" scaleY="1.5" />
+               </children>
+            </Pane>
+            <Pane id="contacts" layoutX="5.0" layoutY="113.0" prefHeight="48.0" prefWidth="200.0" styleClass="contacts" stylesheets="@chatclient.css">
+               <children>
+                  <FontAwesomeIconView fill="#eeeded" glyphName="USER" layoutX="17.0" layoutY="27.0" scaleX="1.5" scaleY="1.5" />
+                  <Text fill="#eeeded" layoutX="47.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contacts">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane id="settings" layoutX="180.0" layoutY="5.0" prefHeight="24.0" prefWidth="24.0" styleClass="settings" stylesheets="@chatclient.css">
+               <children>
+                  <FontAwesomeIconView fill="#eeeded" glyphName="ANGLE_DOWN" layoutX="8.0" layoutY="16.0" scaleX="1.5" scaleY="1.5" />
+               </children>
+            </Pane>
+            <ImageView fitHeight="21.0" fitWidth="24.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <Text fill="#eeeded" layoutX="13.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="just some status" wrappingWidth="183.13671875">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <ScrollPane id="scrollpane" layoutX="5.0" layoutY="160.0" prefHeight="415.0" prefWidth="200.0" styleClass="scrollpane" stylesheets="@chatclient.css">
+               <content>
+                <AnchorPane id="contactlist" minHeight="0.0" minWidth="0.0" prefWidth="185.0" styleClass="contactlist" stylesheets="@chatclient.css" />
+               </content>
+            </ScrollPane>
+         </children>
+      </Pane>
+      <Pane id="topbar" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css">
+         <children>
+            <Pane id="close" layoutX="870.0" onMouseReleased="#close" prefHeight="20.0" prefWidth="30.0" styleClass="close" stylesheets="@chatclient.css">
+               <children>
+                  <FontAwesomeIconView fill="#eeeded" glyphName="CLOSE" layoutX="10.0" layoutY="14.0" scaleX="1.5" scaleY="1.5" />
+               </children>
+            </Pane>
+            <Pane id="minimize" layoutX="840.0" onMouseReleased="#minimize" prefHeight="20.0" prefWidth="30.0" styleClass="minimize" stylesheets="@chatclient.css">
+               <children>
+                  <Text fill="#eeeded" layoutX="12.0" layoutY="9.0" scaleX="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="_" />
+               </children>
+            </Pane>
+            <Text layoutX="7.0" layoutY="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CC">
+               <fill>
+                  <LinearGradient endX="1.0" endY="1.0">
+                     <stops>
+                        <Stop color="#ff8c00" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </LinearGradient>
+               </fill>
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane id="tabinfo" layoutX="210.0" layoutY="20.0" prefHeight="50.0" prefWidth="690.0" stylesheets="@chatclient.css" />
+      <Pane id="midpane" layoutX="210.0" layoutY="70.0" prefHeight="530.0" prefWidth="690.0" />
+   </children>
+</AnchorPane>

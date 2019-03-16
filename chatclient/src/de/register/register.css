@@ -1,0 +1,55 @@
+.close_bg:hover
+{
+    -fx-background-color: #ff3333;
+    -fx-cursor: hand;
+}
+
+.minimize_bg:hover
+{
+	-fx-background-color: #555555;      
+	-fx-cursor: hand; 
+}
+
+.root
+{
+	-fx-background-color: #222222;
+}
+
+.username
+{
+	-fx-background-color: #DDDDDD;
+}
+
+.password
+{
+	-fx-background-color: #DDDDDD;
+}
+
+.passwordrepeat
+{
+  	-fx-background-color: #DDDDDD;
+}
+
+.email
+{
+    -fx-background-color: #DDDDDD;
+}
+
+.registerbutton
+{
+    -fx-background-color: #333333;
+}
+
+.registerbutton:hover
+{
+    -fx-background-color: #444444;
+    -fx-cursor: hand;
+}
+
+.back_bg:hover
+{
+   	-fx-background-color: #555555;
+	-fx-cursor: hand;
+}
+
+

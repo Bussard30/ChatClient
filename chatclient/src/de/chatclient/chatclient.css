@@ -1,0 +1,61 @@
+/*
+ * Empty Stylesheet file.
+ */
+.root
+{
+    -fx-background-color: #444444;
+}
+
+.leftside
+{
+    -fx-background-color: #333333;
+}
+
+.close:hover
+{
+    -fx-background-color: ff3333;
+    -fx-cursor: hand;
+}
+
+.minimize:hover
+{
+    -fx-background-color: #555555;
+    -fx-cursor: hand;
+}
+
+.topbar
+{
+    -fx-background-color: #222222;
+}
+
+.scrollpane > .viewport 
+{
+   -fx-background-color: transparent;
+}
+.scrollpane
+{
+    -fx-background-color: #333333;
+    -fx-controll-inner-background: #333333;
+}
+
+.contactlist
+{
+    -fx-background-color: #333333;
+    -fx-border-radius: 3;
+}
+
+.notifications:hover
+{
+    -fx-background-color: #444444;
+}
+
+.contacts:hover
+{
+    -fx-background-color: #444444;
+}
+
+.settings:hover
+{
+    -fx-background-color: #444444;
+    -fx-cursor: hand;
+}
