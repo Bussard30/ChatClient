@@ -37,7 +37,7 @@ public class Main extends Application
 	private FXMLLoader forgotPasswordLoader;
 	private FXMLLoader registrationLoader;
 	private FXMLLoader chatClientLoader;
-
+	
 	private Scene loginScene;
 	private Scene forgotPasswordScene;
 	private Scene registrationScene;
@@ -72,7 +72,6 @@ public class Main extends Application
 //				c.initConnection();
 //			}
 //		}, 2 * 1000);
-
 	}
 
 	@Override
