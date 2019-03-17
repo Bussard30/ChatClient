@@ -48,7 +48,7 @@ public class Main extends Application
 	public static InetSocketAddress server = new InetSocketAddress("cancersquad.dyn.ddnss.de", 55555);
 	public static int port = 55555;
 
-	public static Protocol protocol = new Protocol("1.0", "1.0");
+	public static final Protocol protocol = new Protocol("1.0", "1.0");
 
 	public Main()
 	{
