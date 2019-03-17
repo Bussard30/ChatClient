@@ -1,0 +1,53 @@
+.root
+{
+    -fx-background-color: #222222;	
+}
+
+.username
+{
+    -fx-background-color: #DDDDDD;
+}
+
+
+.password
+{
+    -fx-background-color: #DDDDDD;
+}
+
+.loginbutton
+{
+    -fx-background-color: #333333;
+}
+
+.loginbutton:hover
+{
+    -fx-background-color: #444444;
+    -fx-cursor: hand;
+}
+
+.fp:hover
+{
+	-fx-cursor: hand;
+}
+
+.r:hover
+{
+	-fx-cursor: hand;
+}
+
+.checkbox:hover
+{
+	-fx-cursor: hand;
+}
+
+.close_bg:hover
+{
+    -fx-background-color: #ff3333;
+    -fx-cursor: hand;
+}
+
+.minimize_bg:hover
+{
+    -fx-background-color: #555555;
+    -fx-cursor: hand;
+}
