@@ -61,17 +61,17 @@ public class Main extends Application
 		}
 		dsm = new DSManager();
 
-//		Client c = new Client();
-//		c.connect(55555);
-//		Logger.info("---------------------------------------------------");
-//		(new Timer()).schedule(new TimerTask()
-//		{
-//			@Override
-//			public void run()
-//			{
-//				c.initConnection();
-//			}
-//		}, 2 * 1000);
+		Client c = new Client();
+		c.connect(55555);
+		Logger.info("---------------------------------------------------");
+		(new Timer()).schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				c.initConnection();
+			}
+		}, 2 * 1000);
 	}
 
 	@Override
