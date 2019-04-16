@@ -2,7 +2,7 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
     <stylesheets>
         <URL value="@chatclient.css" />
     </stylesheets>
@@ -58,11 +58,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <ScrollPane id="scrollpane" layoutX="5.0" layoutY="160.0" prefHeight="415.0" prefWidth="200.0" styleClass="scrollpane" stylesheets="@chatclient.css">
-               <content>
-                <AnchorPane id="contactlist" minHeight="0.0" minWidth="0.0" prefWidth="185.0" styleClass="contactlist" stylesheets="@chatclient.css" />
-               </content>
-            </ScrollPane>
+            <ListView id="listview" fx:id="recentcontacts" layoutX="5.0" layoutY="160.0" prefHeight="415.0" prefWidth="200.0" stylesheets="@chatclient.css" />
          </children>
       </Pane>
       <Pane id="topbar" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css">

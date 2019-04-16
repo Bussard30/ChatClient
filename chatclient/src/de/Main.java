@@ -4,23 +4,26 @@
 
 package de;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.datastorage.main.DSManager;
 import de.networking.client.Client;
-import de.networking.client.Requests;
 import de.networking.logger.Logger;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import networking.types.Protocol;
-import networking.types.Request;
 
 /**
  *
@@ -37,7 +40,7 @@ public class Main extends Application
 	private FXMLLoader forgotPasswordLoader;
 	private FXMLLoader registrationLoader;
 	private FXMLLoader chatClientLoader;
-	
+
 	private Scene loginScene;
 	private Scene forgotPasswordScene;
 	private Scene registrationScene;
@@ -72,6 +75,7 @@ public class Main extends Application
 				c.initConnection();
 			}
 		}, 2 * 1000);
+
 	}
 
 	@Override
@@ -127,6 +131,7 @@ public class Main extends Application
 		// initing scene
 		chatClientScene = new Scene(root);
 		chatClientScene.getStylesheets().add(Main.class.getResource("chatclient/chatclient.css").toExternalForm());
+		chatClientScene.getStylesheets().add(Main.class.getResource("chatclient/contact/contact.css").toExternalForm());
 	}
 
 	public void initContacts()

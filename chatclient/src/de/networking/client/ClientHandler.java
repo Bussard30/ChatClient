@@ -160,6 +160,7 @@ public class ClientHandler
 			Object o = deserialize(b);
 			if (o instanceof Request)
 			{
+				Logger.info("Evaluating request...");
 				switch (phase)
 				{
 				case PRE0:
@@ -195,7 +196,7 @@ public class ClientHandler
 				}
 			} else if (o instanceof Response)
 			{
-				Logger.info("Received Response. Wow!");
+				Logger.info("Evaluating response...");
 				switch (phase)
 				{
 

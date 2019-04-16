@@ -28,11 +28,11 @@
     -fx-background-color: #222222;
 }
 
-.scrollpane > .viewport 
+.listview > .viewport 
 {
    -fx-background-color: transparent;
 }
-.scrollpane
+.listview
 {
     -fx-background-color: #333333;
     -fx-controll-inner-background: #333333;
