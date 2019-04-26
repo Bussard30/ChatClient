@@ -1,19 +1,24 @@
 package de.networking.client;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.security.GeneralSecurityException;
+import java.security.Key;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.util.Base64;
 import java.util.HashMap;
 
 import javax.crypto.Cipher;
@@ -21,10 +26,13 @@ import javax.crypto.Cipher;
 import de.Main;
 import de.networking.logger.Logger;
 import javafx.application.Platform;
+import networking.exceptions.BadPacketException;
 import networking.types.CredentialsWrapper;
-import networking.types.Protocol;
+import networking.types.ProtocolWrapper;
 import networking.types.Request;
 import networking.types.Response;
+import networking.types.TokenWrapper;
+import networking.types.Wrapper;
 
 public class ClientHandler
 {
@@ -108,7 +116,8 @@ public class ClientHandler
 			Logger.info("Sending user credentials!");
 			try
 			{
-				send(new Request(Requests.TRSMT_CREDS.getName(), new CredentialsWrapper(username, password, wantsToken)));
+				send(new Request(Requests.TRSMT_CREDS.getName(),
+						new CredentialsWrapper(username, password, wantsToken)));
 			} catch (Exception e)
 			{
 				e.printStackTrace();
@@ -205,7 +214,6 @@ public class ClientHandler
 					{
 						if (r.getName().equals(((Response) o).getName()))
 						{
-							Logger.info("Some kind of achievement!");
 							switch (r)
 							{
 							case RSP_KEY:
@@ -221,7 +229,7 @@ public class ClientHandler
 								}
 								break;
 							default:
-								Logger.info(r.getName());
+								Logger.info(r.getName() + " in pre0");
 								break;
 							}
 						}
@@ -236,9 +244,9 @@ public class ClientHandler
 							switch (r)
 							{
 							case RSP_PROTOCOL:
-								if (((Response) o).getBuffer() instanceof Protocol)
+								if (((Response) o).getBuffer() instanceof ProtocolWrapper)
 								{
-									if (!((Protocol) ((Response) o).getBuffer()).getProtocolVersion()
+									if (!((ProtocolWrapper) ((Response) o).getBuffer()).getProtocolVersion()
 											.equals(Main.protocol.getProtocolVersion()))
 									{
 
@@ -249,7 +257,7 @@ public class ClientHandler
 										Logger.info("Protocol version en par with server!");
 										networkphaseprogress.get(phase)[1] = true;
 									}
-									if (!((Protocol) ((Response) o).getBuffer()).getClientVersion()
+									if (!((ProtocolWrapper) ((Response) o).getBuffer()).getClientVersion()
 											.equals(Main.protocol.getClientVersion()))
 									{
 										Logger.info("Client version not en par with server!");
@@ -263,6 +271,7 @@ public class ClientHandler
 								}
 								break;
 							default:
+								Logger.info(r.getName() + " in pre1");
 								break;
 
 							}
@@ -278,7 +287,7 @@ public class ClientHandler
 							switch (r)
 							{
 							case RSP_CREDS:
-								if (((Response) o).getBuffer() instanceof String)
+								if (((Response) o).getBuffer() instanceof TokenWrapper)
 								{
 									if (((Response) o).getBuffer().equals("ACCESS DENIED"))
 									{
@@ -294,6 +303,7 @@ public class ClientHandler
 							case RSP_TOKEN:
 								break;
 							default:
+								Logger.info(r.getName() + " in pre1");
 								break;
 							}
 						}
@@ -334,7 +344,7 @@ public class ClientHandler
 			} else if (networkphaseprogress.get(phase)[0] == false)
 			{
 				Logger.info("Sending protocol !");
-				Protocol p = Main.protocol;
+				ProtocolWrapper p = Main.protocol;
 				send(new Request(Requests.TRSMT_PROTOCOL.getName(), p));
 				networkphaseprogress.get(phase)[0] = true;
 			}
@@ -347,11 +357,14 @@ public class ClientHandler
 			if (networkphaseprogress.get(phase)[1] == true)
 			{
 				Logger.info("Logged in, advancing.");
-	             Platform.runLater(new Runnable() {
-	                 @Override public void run() {
-	     				Main.getInstance().setScene(3);
-	                 }
-	             });
+				Platform.runLater(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						Main.getInstance().setScene(3);
+					}
+				});
 
 				advance();
 			}
@@ -420,44 +433,164 @@ public class ClientHandler
 		return out;
 	}
 
+	// public void send(Request r) throws Exception
+	// {
+	// if (current == Integer.MAX_VALUE)
+	// {
+	// current = 0;
+	// } else
+	// {
+	// current++;
+	// }
+	// r.setNr(current);
+	// byte[] b = serialize(r);
+	// if (phase != NetworkPhases.PRE0)
+	// {
+	// byte[] b0 = encrypt(pub1, b);
+	// out.writeInt(b0.length);
+	// out.write(b0);
+	// } else
+	// {
+	// out.writeInt(b.length);
+	// out.write(b);
+	// }
+	// out.flush();
+	// }
+	//
+	// public void send(Response r) throws Exception
+	// {
+	// byte[] b = serialize(r);
+	// if (phase != NetworkPhases.PRE0)
+	// {
+	// byte[] b0 = encrypt(pub1, b);
+	// out.writeInt(b0.length);
+	// out.write(b0);
+	// } else
+	// {
+	// out.writeInt(b.length);
+	// out.write(b);
+	// }
+	// out.flush();
+	// }
+
 	public void send(Request r) throws Exception
 	{
-		if (current == Integer.MAX_VALUE)
-		{
-			current = 0;
-		} else
-		{
-			current++;
-		}
-		r.setNr(current);
-		byte[] b = serialize(r);
 		if (phase != NetworkPhases.PRE0)
 		{
-			byte[] b0 = encrypt(pub1, b);
+			String[] sa = getStrings(r.getBuffer());
+			String s = null;
+			if (sa.length == 1)
+			{
+				s = "Req;" + r.getName();
+				s = s + ";" + sa[0];
+			} else if (sa.length > 1)
+			{
+				s = "Req;" + r.getName();
+				for (int i = 0; i < sa.length; i++)
+				{
+					s = s + ";" + sa[i];
+				}
+			}
+			byte[] b0 = encrypt(pub1, s.getBytes("UTF8"));
 			out.writeInt(b0.length);
 			out.write(b0);
 		} else
 		{
-			out.writeInt(b.length);
-			out.write(b);
+			String[] sa = getStrings(r.getBuffer());
+			String s = null;
+			if (sa.length == 1)
+			{
+				s = "Req;" + r.getName();
+				s = s + ";" + sa[0];
+			} else if (sa.length > 1)
+			{
+				s = "Req;" + r.getName();
+				for (int i = 0; i < sa.length; i++)
+				{
+					s = s + ";" + sa[i];
+				}
+			}
+			byte[] b0 = s.getBytes("UTF8");
+			out.writeInt(b0.length);
+			out.write(b0);
 		}
 		out.flush();
 	}
 
 	public void send(Response r) throws Exception
 	{
-		byte[] b = serialize(r);
 		if (phase != NetworkPhases.PRE0)
 		{
-			byte[] b0 = encrypt(pub1, b);
+			String[] sa = getStrings(r.getBuffer());
+			String s = null;
+			if (sa.length == 1)
+			{
+				s = "Res;" + r.getName();
+				s = s + ";" + sa[0];
+			} else if (sa.length > 1)
+			{
+				s = "Res;" + r.getName();
+				for (int i = 0; i < sa.length; i++)
+				{
+					s = s + ";" + sa[i];
+				}
+			}
+			byte[] b0 = encrypt(pub1, s.getBytes("UTF8"));
 			out.writeInt(b0.length);
 			out.write(b0);
 		} else
 		{
-			out.writeInt(b.length);
-			out.write(b);
+			String[] sa = getStrings(r.getBuffer());
+			String s = null;
+			if (sa.length == 1)
+			{
+				s = "Res;" + r.getName();
+				s = s + ";" + sa[0];
+			} else if (sa.length > 1)
+			{
+				s = "Res;" + r.getName();
+				for (int i = 0; i < sa.length; i++)
+				{
+					s = s + ";" + sa[i];
+				}
+			}
+			byte[] b0 = s.getBytes("UTF8");
+			out.writeInt(b0.length);
+			out.write(b0);
 		}
 		out.flush();
+	}
+
+	private String[] getStrings(Object o) throws UnsupportedEncodingException
+	{
+
+		if (o instanceof Wrapper)
+		{
+			return ((networking.types.Wrapper) o).getStrings();
+		}
+		if (o instanceof Key)
+		{
+			if (o instanceof PublicKey)
+			{
+				return new String[]
+				{ decodePublicKey((PublicKey) o) };
+			} else if (o instanceof PrivateKey)
+			{
+				return new String[]
+				{ decodePrivateKey((PrivateKey) o) };
+			}
+		}
+		if (o instanceof String)
+		{
+			return new String[]
+			{ (String) o };
+		}
+		if (o instanceof Boolean)
+		{
+			return new String[]
+			{ ((boolean) o) ? "true" : "false" };
+		}
+		throw new RuntimeException("Could not convert Object to string");
 	}
 
 	public Socket getSocket()
@@ -497,12 +630,90 @@ public class ClientHandler
 		return cipher.doFinal(encrypted);
 	}
 
-	private Object deserialize(byte[] b) throws IOException, ClassNotFoundException
+	private Object deserialize(byte[] b) throws UnsupportedEncodingException, BadPacketException
 	{
-		try (ByteArrayInputStream bis = new ByteArrayInputStream(b); ObjectInputStream in = new ObjectInputStream(bis))
+		String s = new String(b, "UTF8");
+		String[] temp = s.split(";");
+		String[] info = new String[]
+		{ temp[0], temp[1] };
+		String[] data = new String[temp.length - 2];
+		for (int i = 2; i < temp.length; i++)
 		{
-			return in.readObject();
+			data[i - 2] = temp[i];
 		}
+
+		if (info[0] == "Req")
+		{
+			for (Requests r : Requests.values())
+			{
+				if (r.getName().equals(info[1]))
+				{
+					if (r.getClass().isAssignableFrom(Wrapper.class))
+					{
+						return new Request(info[1], Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
+					} else if (r.getType().equals(PublicKey.class))
+					{
+						try
+						{
+							return new Request(info[1], loadPublicKey(data[0]));
+						} catch (GeneralSecurityException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			throw new BadPacketException("Package malfunctional");
+		} else if (info[0] == "Res")
+
+		{
+			for (Requests r : Requests.values())
+			{
+				if (r.getName().equals(info[1]))
+				{
+					if (r.getType().isAssignableFrom(Wrapper.class))
+					{
+						return new Response(info[1], Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
+					} else if (r.getType().equals(PublicKey.class))
+					{
+						try
+						{
+							return new Response(info[1], loadPublicKey(data[0]));
+						} catch (GeneralSecurityException e)
+						{
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			throw new BadPacketException("Package not properly built");
+		} else
+		{
+			throw new BadPacketException("Type of package not declared");
+		}
+
+	}
+
+	private PrivateKey loadPrivateKey(String key) throws GeneralSecurityException, UnsupportedEncodingException
+	{
+		return KeyFactory.getInstance("RSA")
+				.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(key.getBytes("UTF8"))));
+	}
+
+	public static PublicKey loadPublicKey(String key) throws GeneralSecurityException, UnsupportedEncodingException
+	{
+		return KeyFactory.getInstance("RSA")
+				.generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(key.getBytes("UTF8"))));
+	}
+
+	public static String decodePublicKey(PublicKey key) throws UnsupportedEncodingException
+	{
+		return new String(Base64.getEncoder().encode(key.getEncoded()), "UTF8");
+	}
+
+	public static String decodePrivateKey(PrivateKey key)
+	{
+		return new String(new PKCS8EncodedKeySpec(key.getEncoded()).getEncoded());
 	}
 
 }
