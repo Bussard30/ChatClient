@@ -17,11 +17,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.filechooser.FileSystemView;
+
 import de.networking.logger.Logger;
 
 public class DSManager
 {
-	public static String appdata;
+	public static String path;
 	private static DSManager dsm;
 
 	private HashMap<File, Integer> locks;
@@ -40,9 +42,9 @@ public class DSManager
 		{
 			throw new RuntimeException("Already instantiated");
 		}
-		appdata = System.getenv("APPDATA") + "\\" + "ChatClient";
+		path = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\" + "ChatClient";
 		init();
-		File f = new File(appdata);
+		File f = new File(path);
 		if (!f.exists())
 		{
 			if (!f.mkdirs())
@@ -64,18 +66,18 @@ public class DSManager
 		cal = Calendar.getInstance();
 		sdf = new SimpleDateFormat("d-M-Y-HH-mm-ss");
 
-		System.out.println(appdata);
+		System.out.println(path);
 		settings = new HashMap<>();
 		for (Settings s : Settings.values())
 		{
 			settings.put(s, null);
 		}
-		options = new File(appdata + "\\options.dat");
-		contacts = new File(appdata + "\\contacts.dat");
-		chats = new File(appdata + "\\chats.dat");
-		generaldata = new File(appdata + "\\generaldata.dat");
+		options = new File(path + "\\options.dat");
+		contacts = new File(path + "\\contacts.dat");
+		chats = new File(path + "\\chats.dat");
+		generaldata = new File(path + "\\generaldata.dat");
 
-		log = new File(appdata + "\\logs" + "\\" + sdf.format(cal.getTime()) + ".txt");
+		log = new File(path + "\\logs" + "\\" + sdf.format(cal.getTime()) + ".txt");
 
 		if (!log.getParentFile().exists())
 		{

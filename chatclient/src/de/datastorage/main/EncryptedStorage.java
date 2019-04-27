@@ -23,7 +23,7 @@ public class EncryptedStorage
 	
 	public EncryptedStorage()
 	{
-		data = new File(DSManager.appdata + "\\" + "encrypteddata.dat");
+		data = new File(DSManager.path + "\\" + "encrypteddata.dat");
 		if(!data.exists())
 		{
 			if(data.getParentFile().exists() && data.getParentFile().isDirectory())
@@ -60,7 +60,7 @@ public class EncryptedStorage
 	
 	private void reinit()
 	{
-		data = new File(DSManager.appdata + "\\" + "encrypteddata.dat");
+		data = new File(DSManager.path + "\\" + "encrypteddata.dat");
 		if(!data.exists())
 		{
 			if(data.getParentFile().exists() && data.getParentFile().isDirectory())

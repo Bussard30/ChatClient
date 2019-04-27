@@ -3,8 +3,11 @@
  */
 package de.chatclient;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import de.Main;
 import de.types.Contact;
@@ -25,13 +28,40 @@ public class ChatclientController implements Initializable
 {
 	@FXML
 	ListView<Contact> recentcontacts;
-	
+
 	private ObservableList<Contact> contacts;
+
 	public ChatclientController()
 	{
 		contacts = FXCollections.observableArrayList();
+		try
+		{
+			contacts.addAll(new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL1"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL2"),
+					new Contact(ImageIO.read(Main.class.getResource("image.png")), "LOL3"));
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-	
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
@@ -67,13 +97,13 @@ public class ChatclientController implements Initializable
 	{
 		Main.getInstance().getPrimaryStage().setIconified(true);
 	}
-	
+
 	public void loadContacts(ObservableList<Contact> contacts)
 	{
 		recentcontacts.setItems(contacts);
 		this.contacts = contacts;
 	}
-	
+
 	public void addContact(Contact contact)
 	{
 		contacts.add(contact);

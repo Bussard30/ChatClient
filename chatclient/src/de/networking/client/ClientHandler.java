@@ -28,10 +28,10 @@ import de.networking.logger.Logger;
 import javafx.application.Platform;
 import networking.exceptions.BadPacketException;
 import networking.types.CredentialsWrapper;
+import networking.types.LoginResponseWrapper;
 import networking.types.ProtocolWrapper;
 import networking.types.Request;
 import networking.types.Response;
-import networking.types.TokenWrapper;
 import networking.types.Wrapper;
 
 public class ClientHandler
@@ -287,9 +287,9 @@ public class ClientHandler
 							switch (r)
 							{
 							case RSP_CREDS:
-								if (((Response) o).getBuffer() instanceof TokenWrapper)
+								if (((Response) o).getBuffer() instanceof LoginResponseWrapper)
 								{
-									if (((Response) o).getBuffer().equals("ACCESS DENIED"))
+									if (!(((LoginResponseWrapper) ((Response) o).getBuffer()).isLoggedIn()))
 									{
 										Logger.info("Wrong user credentials");
 										networkphaseprogress.get(phase)[0] = false;
@@ -301,6 +301,18 @@ public class ClientHandler
 								}
 								break;
 							case RSP_TOKEN:
+								if (((Response) o).getBuffer() instanceof LoginResponseWrapper)
+								{
+									if (!(((LoginResponseWrapper) ((Response) o).getBuffer()).isLoggedIn()))
+									{
+										Logger.info("Wrong user credentials");
+										networkphaseprogress.get(phase)[0] = false;
+									} else
+									{
+										Logger.info("Right user credentials! Received token!");
+										networkphaseprogress.get(phase)[1] = true;
+									}
+								}
 								break;
 							default:
 								Logger.info(r.getName() + " in pre1");
@@ -491,6 +503,7 @@ public class ClientHandler
 					s = s + ";" + sa[i];
 				}
 			}
+			Logger.info("Sending " + s);
 			byte[] b0 = encrypt(pub1, s.getBytes("UTF8"));
 			out.writeInt(b0.length);
 			out.write(b0);
@@ -510,6 +523,8 @@ public class ClientHandler
 					s = s + ";" + sa[i];
 				}
 			}
+
+			Logger.info("Sending " + s);
 			byte[] b0 = s.getBytes("UTF8");
 			out.writeInt(b0.length);
 			out.write(b0);
@@ -535,6 +550,7 @@ public class ClientHandler
 					s = s + ";" + sa[i];
 				}
 			}
+			Logger.info("Sending " + s);
 			byte[] b0 = encrypt(pub1, s.getBytes("UTF8"));
 			out.writeInt(b0.length);
 			out.write(b0);
@@ -554,6 +570,7 @@ public class ClientHandler
 					s = s + ";" + sa[i];
 				}
 			}
+			Logger.info("Sending " + s);
 			byte[] b0 = s.getBytes("UTF8");
 			out.writeInt(b0.length);
 			out.write(b0);
@@ -633,6 +650,7 @@ public class ClientHandler
 	private Object deserialize(byte[] b) throws UnsupportedEncodingException, BadPacketException
 	{
 		String s = new String(b, "UTF8");
+		Logger.info(s);
 		String[] temp = s.split(";");
 		String[] info = new String[]
 		{ temp[0], temp[1] };
@@ -642,15 +660,22 @@ public class ClientHandler
 			data[i - 2] = temp[i];
 		}
 
-		if (info[0] == "Req")
+		if (info[0].equals("Req"))
 		{
 			for (Requests r : Requests.values())
 			{
+				Logger.info("checking some stuff");
+				Logger.info(info[1]);
 				if (r.getName().equals(info[1]))
 				{
-					if (r.getClass().isAssignableFrom(Wrapper.class))
+					Logger.info(r.getName());
+					if (r.getType().getSuperclass() != null)
 					{
-						return new Request(info[1], Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
+						if (r.getType().getSuperclass().equals(Wrapper.class))
+						{
+							return new Request(info[1],
+									Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
+						}
 					} else if (r.getType().equals(PublicKey.class))
 					{
 						try
@@ -664,16 +689,22 @@ public class ClientHandler
 				}
 			}
 			throw new BadPacketException("Package malfunctional");
-		} else if (info[0] == "Res")
-
+		} else if (info[0].equals("Res"))
 		{
-			for (Requests r : Requests.values())
+			for (Responses r : Responses.values())
 			{
+				Logger.info("checking some stuff");
 				if (r.getName().equals(info[1]))
 				{
-					if (r.getType().isAssignableFrom(Wrapper.class))
+					Logger.info(r.getName());
+					if (r.getType().getSuperclass() != null)
 					{
-						return new Response(info[1], Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
+						if (r.getType().getSuperclass().equals(Wrapper.class))
+						{
+							Logger.info("ya");
+							return new Response(info[1],
+									Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
+						}
 					} else if (r.getType().equals(PublicKey.class))
 					{
 						try
@@ -688,6 +719,7 @@ public class ClientHandler
 			}
 			throw new BadPacketException("Package not properly built");
 		} else
+
 		{
 			throw new BadPacketException("Type of package not declared");
 		}

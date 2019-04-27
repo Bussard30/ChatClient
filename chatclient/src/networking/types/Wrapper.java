@@ -16,10 +16,6 @@ public abstract class Wrapper
 			{
 				if(c.getParameterTypes()[0].equals(String[].class) && c.getParameterTypes().length == 1)
 				{
-					for(Parameter p : c.getParameters())
-					{
-						System.out.println(p.getName());
-					}
 					return (Wrapper) c.newInstance((Object)s);
 				}
 			}

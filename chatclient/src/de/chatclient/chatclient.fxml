@@ -58,7 +58,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <ListView id="listview" fx:id="recentcontacts" layoutX="5.0" layoutY="160.0" prefHeight="415.0" prefWidth="200.0" stylesheets="@chatclient.css" />
+            <ListView id="listview" fx:id="recentcontacts" layoutX="5.0" layoutY="160.0" prefHeight="415.0" prefWidth="200.0" styleClass="listview" stylesheets="@chatclient.css" />
          </children>
       </Pane>
       <Pane id="topbar" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css">

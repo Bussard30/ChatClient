@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import de.datastorage.main.DSManager;
 import de.networking.client.Client;
 import de.networking.logger.Logger;
+import de.types.Contact;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -168,6 +169,11 @@ public class Main extends Application
 		default:
 			throw new RuntimeException();
 		}
+	}
+	
+	public void addContact(Contact c)
+	{
+		
 	}
 
 	/**

@@ -2,6 +2,7 @@ package de.networking.client;
 
 import java.security.PublicKey;
 
+import networking.types.LoginResponseWrapper;
 import networking.types.MessageWrapper;
 import networking.types.ProtocolWrapper;
 import networking.types.TokenWrapper;
@@ -15,10 +16,10 @@ public enum Responses
 	RSP_PROTOCOL("RSP_PROTOCOL", NetworkPhases.PRE1, ProtocolWrapper.class),
 
 	// TRANSMIT (user) CREDENTIALS, responds with new token
-	RSP_CREDS("RSP_CREDS", NetworkPhases.PRE2, TokenWrapper.class),
+	RSP_CREDS("RSP_CREDS", NetworkPhases.PRE2, LoginResponseWrapper.class),
 
 	// TRANSMIT (user) CREDENTIALS, responds with new token
-	RSP_TOKEN("RSP_TOKEN", NetworkPhases.PRE2, TokenWrapper.class),
+	RSP_TOKEN("RSP_TOKEN", NetworkPhases.PRE2, LoginResponseWrapper.class),
 
 	RCV_MESSAGE("RCV_MESSAGE", NetworkPhases.COM, MessageWrapper.class),
 
