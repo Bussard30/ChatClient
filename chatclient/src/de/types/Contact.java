@@ -5,12 +5,14 @@ import java.awt.image.BufferedImage;
 public class Contact
 {
 	private BufferedImage image;
-	private String name;
-
-	public Contact(BufferedImage image, String name)
+	private String name, status;
+	
+	
+	public Contact(BufferedImage image, String name, String status)
 	{
 		this.image = image;
 		this.name = name;
+		this.status = status;
 	}
 	
 	public BufferedImage getImage()
@@ -21,5 +23,10 @@ public class Contact
 	public String getName()
 	{
 		return name;
+	}
+	
+	public String getStatus()
+	{
+		return status;
 	}
 }

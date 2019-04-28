@@ -21,6 +21,9 @@ public class ContactViewCell extends ListCell<Contact>
 	private Text username;
 
 	@FXML
+	private Text status;
+
+	@FXML
 	private FontAwesomeIconView close;
 
 	@FXML
