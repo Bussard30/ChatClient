@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
+<AnchorPane id="AnchorPane" fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
     <stylesheets>
         <URL value="@chatclient.css" />
     </stylesheets>
@@ -66,7 +66,7 @@
             </Text>
          </children>
       </Pane>
-      <Pane id="topbar" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Pane id="topbar" fx:id="toppane" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css">
          <children>
             <Pane id="close" layoutX="870.0" onMouseReleased="#close" prefHeight="20.0" prefWidth="30.0" styleClass="close" stylesheets="@chatclient.css">
                <children>
@@ -94,6 +94,6 @@
          </children>
       </Pane>
       <Pane id="tabinfo" layoutX="210.0" layoutY="20.0" prefHeight="50.0" prefWidth="690.0" stylesheets="@chatclient.css" />
-      <Pane id="midpane" layoutX="210.0" layoutY="70.0" prefHeight="530.0" prefWidth="690.0" />
+      <Pane id="midpane" layoutX="210.0" layoutY="70.0" prefHeight="530.0" prefWidth="690.0" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="70.0" />
    </children>
 </AnchorPane>

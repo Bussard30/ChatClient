@@ -19,6 +19,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 /**
  * FXML Controller class
@@ -29,6 +31,12 @@ public class ChatclientController implements Initializable
 {
 	@FXML
 	ListView<Contact> recentcontacts;
+	
+	@FXML
+	Pane toppane;
+	
+	@FXML
+	AnchorPane anchorpane;
 
 	private ObservableList<Contact> contacts;
 
@@ -57,6 +65,7 @@ public class ChatclientController implements Initializable
 		recentcontacts.setMaxHeight(contacts.size() * 46 + 2 );
 		Logger.info(String.valueOf(contacts.size() * 46 + 2));
 		Logger.info(String.valueOf(recentcontacts.getFixedCellSize()));
+		anchorpane.setMaxSize(900, 600);
 	}
 
 	private double xOffset;

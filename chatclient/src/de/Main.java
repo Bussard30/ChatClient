@@ -77,17 +77,21 @@ public class Main extends Application
 	@Override
 	public void start(Stage stage) throws Exception
 	{
+		long old = System.currentTimeMillis();
 		Font.loadFont(Main.class.getResource("font.ttf").toExternalForm(), 10);
 		primaryStage = stage;
 		initLogin();
+		stage.setScene(loginScene);
+		stage.initStyle(StageStyle.UNDECORATED);
+		stage.show();
+		Logger.info("It took " + (System.currentTimeMillis() - old) + "ms");
 		initForgotPassword();
 		initRegistration();
 		initChatClient();
 		// TODO implementation of keepmeloggedin
 		//
-		stage.setScene(loginScene);
-		stage.initStyle(StageStyle.UNDECORATED);
-		stage.show();
+
+		Logger.info("It took " + (System.currentTimeMillis() - old) + "ms");
 	}
 
 	public void initLogin() throws Exception
@@ -145,6 +149,7 @@ public class Main extends Application
 	{
 
 	}
+	
 
 	/**
 	 * 

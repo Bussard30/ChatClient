@@ -30,12 +30,12 @@
 
 .list-cell {
     -fx-background-color: #333333;
+
 }
 
 .list-cell:hover
 {
 	-fx-background-color: #555555;
-	-fx-border-radius : 20;
 }
 .list-view {
     -fx-background-color: #333333;
@@ -113,5 +113,5 @@
 	-fx-background-radius: 2.0em;
 }
 .listview .scroll-bar:horizontal {
-    -fx-scale-x: 0;
+    -fx-scale-x: 0.0;
 }
