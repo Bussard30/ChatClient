@@ -29,6 +29,7 @@ import javafx.application.Platform;
 import networking.exceptions.BadPacketException;
 import networking.types.CredentialsWrapper;
 import networking.types.LoginResponseWrapper;
+import networking.types.MessageWrapper;
 import networking.types.ProtocolWrapper;
 import networking.types.Request;
 import networking.types.Response;
@@ -128,7 +129,12 @@ public class ClientHandler
 			Logger.info("Already sent user credentials!");
 		}
 	}
-
+	
+	public void sendMessage(MessageWrapper m)
+	{
+		//TODO
+	}
+	
 	public void run() throws Exception
 	{
 		byte b[] = null;
