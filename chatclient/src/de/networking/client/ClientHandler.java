@@ -366,7 +366,7 @@ public class ClientHandler
 			// {
 			// // do nothing
 			// } else
-			if (networkphaseprogress.get(phase)[1] == true)
+			if (/*networkphaseprogress.get(phase)[1] == **/true)
 			{
 				Logger.info("Logged in, advancing.");
 				Platform.runLater(new Runnable()

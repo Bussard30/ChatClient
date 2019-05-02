@@ -1,0 +1,26 @@
+.root
+{
+	-fx-background-color: #222222;
+}
+
+
+.fenster:hover
+{
+	-fx-background-color: #555555;
+	-fx-cursor: hand;
+}
+
+.close_bg:hover
+{
+    -fx-background-color: #ff3333;
+    -fx-cursor: hand;
+}
+
+.minimize_bg:hover
+{
+    -fx-background-color: #555555;
+    -fx-cursor: hand;
+}
+
+
+.
