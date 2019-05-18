@@ -2,8 +2,9 @@ package de.datastorage.main;
 
 public enum Settings
 {
-	KEEPLOGGEDIN("keeploggedin", Phases.PRE, false, null), AUTOSAVE_INTERVAL("autosave_interval", Phases.MID, 10,
-			"value in minutes");
+	KEEPLOGGEDIN("keeploggedin", Phases.PRE, false, null),
+	LANGUAGE("language", Phases.PRE, "DE", "Language"),
+	ENCRYPTION("encryption_level", Phases.PRE, "1024", "Encryption level");
 
 	private final String name;
 	private final Phases phase;

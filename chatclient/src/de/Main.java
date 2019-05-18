@@ -58,8 +58,9 @@ public class Main extends Application
 		{
 			throw new RuntimeException();
 		}
+		long old = System.currentTimeMillis();
 		dsm = new DSManager();
-
+		Logger.info("DSQuery took " + (System.currentTimeMillis() - old) + "ms");
 		Client c = new Client();
 		c.connect(55555);
 		Logger.info("---------------------------------------------------");
@@ -78,6 +79,7 @@ public class Main extends Application
 	public void start(Stage stage) throws Exception
 	{
 		long old = System.currentTimeMillis();
+		Logger.info("yoyoyooyoyooyoyooyo");
 		Font.loadFont(Main.class.getResource("font.ttf").toExternalForm(), 10);
 		primaryStage = stage;
 		initLogin();
