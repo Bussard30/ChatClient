@@ -57,8 +57,7 @@ public class RegisterController implements Initializable
 		{
 			Logger.info("Your data will be submitted.");
 
-			Logger.info(((TextField) Main.getInstance().getLoginLoader().getNamespace().get("username")).getText());
-			Logger.info(((PasswordField) Main.getInstance().getLoginLoader().getNamespace().get("password")).getText());
+			
 		} else if (event.getCode() == KeyCode.ESCAPE)
 		{
 			Main.getInstance().setScene(0);

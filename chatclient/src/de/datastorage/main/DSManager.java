@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
-import java.io.StringWriter;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
@@ -131,8 +130,7 @@ public class DSManager
 				e.printStackTrace();
 			}
 			Logger.info("Printing default options...");
-			pWOptions.println("#"
-					+ "Options file of ChatClient. Do not edit unless you know what you're doing (except you are a dum dum).");
+			pWOptions.println("#" + "Options file of ChatClient. Do not edit unless you know what you're doing.");
 			for (Phases p : Phases.values())
 			{
 				pWOptions.println("#" + p.getName());
@@ -172,8 +170,7 @@ public class DSManager
 			}
 
 			Logger.info("Printing default contacts...");
-			pWContacts.println("#"
-					+ "Contacts file of ChatClient. Do not edit unless you know what you're doing (except you are a dum dum).");
+			pWContacts.println("#" + "Contacts file of ChatClient. Do not edit unless you know what you're doing.");
 			Logger.info("Done.");
 		} else
 		{
@@ -205,8 +202,7 @@ public class DSManager
 			}
 
 			Logger.info("Printing default chats...");
-			pWChats.println("#"
-					+ "Chats file of ChatClient. Do not edit unless you know what you're doing (except you are a dum dum).");
+			pWChats.println("#" + "Chats file of ChatClient. Do not edit unless you know what you're doing.");
 			Logger.info("Done.");
 		} else
 		{
@@ -237,8 +233,7 @@ public class DSManager
 				e.printStackTrace();
 			}
 			Logger.info("Printing default general data...");
-			pWgd.println("#"
-					+ "Chats file of ChatClient. Do not edit unless you know what you're doing (except you are a dum dum).");
+			pWgd.println("#" + "Chats file of ChatClient. Do not edit unless you know what you're doing.");
 
 			Logger.info("Done.");
 		} else
@@ -253,6 +248,60 @@ public class DSManager
 			}
 		}
 		Logger.info("Done creating PWs/BRs.");
+		// Checking content...
+		try
+		{
+			clear(options);
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try
+		{
+			createOptions(getValuesOfCurrentOptions());
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void createOptions(HashMap<Settings, Object> m)
+	{
+		PrintWriter pw = null;
+		try
+		{
+			pw = new PrintWriter(new FileOutputStream(options, false));
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+		Logger.info("Printing options...");
+		pw.println("#" + "Options file of ChatClient. Do not edit unless you know what you're doing.");
+		for (Phases p : Phases.values())
+		{
+			pw.println("#" + p.getName());
+			for (Settings s : Settings.values())
+			{
+				if (s.getPhase() == p)
+				{
+					if (m.containsKey(s))
+					{
+						pw.println("#" + s.getComment());
+						pw.println(s.getName() + " = " + m.get(s).toString());
+					} else
+					{
+						pw.println("#" + s.getComment());
+						pw.println(s.getName() + " = " + s.getDefaultValue());
+					}
+				}
+			}
+			pw.println();
+		}
+		pw.flush();
+		Logger.info("Done.");
 	}
 
 	public static String readStringFromURL(String requestURL) throws IOException
@@ -266,11 +315,12 @@ public class DSManager
 
 	/**
 	 * This method is only being used in de.networking.logger.Logger
-	 * @throws FileNotFoundException 
+	 * 
+	 * @throws FileNotFoundException
 	 */
 	public void appendLine(String s) throws FileNotFoundException
 	{
-		PrintWriter pw = new PrintWriter(new FileOutputStream(log,true));
+		PrintWriter pw = new PrintWriter(new FileOutputStream(log, true));
 		pw.append(s);
 		pw.flush();
 		pw.close();
@@ -360,7 +410,7 @@ public class DSManager
 		String line;
 		while ((line = br.readLine()) != null)
 		{
-			if (line.startsWith(set.getName()))
+			if (line.replaceAll("\\s", "").startsWith(set.getName()))
 			{
 				line = set.getName() + " = " + value.toString();
 			}
@@ -375,8 +425,121 @@ public class DSManager
 
 		br.close();
 		pw.close();
-		Logger.info("Editing operation of setting \"" + set.getName() + "\" took " + Long.toOctalString(System.currentTimeMillis() - l) + "ms");
+		Logger.info("Editing operation of setting \"" + set.getName() + "\" took "
+				+ Long.toOctalString(System.currentTimeMillis() - l) + "ms");
 		return true;
+	}
+
+	public void clear(File target) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(target));
+
+		StringBuffer inputBuffer = new StringBuffer();
+		String line;
+		while ((line = br.readLine()) != null)
+		{
+			boolean b = false;
+			for (Settings set : Settings.values())
+			{
+				if (line.replaceAll("\\s", "").startsWith(set.getName()) || line.replaceAll("\\s", "").startsWith("#")
+						|| line.replaceAll("\\s", "").length() == 0)
+				{
+					b = true;
+					break;
+				}
+			}
+
+			if (b)
+			{
+				inputBuffer.append(line);
+				inputBuffer.append('\n');
+			} else
+			{
+				Logger.info("Removed line : " + line);
+			}
+		}
+		PrintWriter pw = new PrintWriter(options);
+		pw.print(inputBuffer.toString());
+		pw.flush();
+
+		pw.close();
+		br.close();
+	}
+
+	public HashMap<Settings, Object> getValuesOfCurrentOptions() throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(options));
+		HashMap<Settings, Object> temp = new HashMap<>();
+
+		StreamTokenizer st = new StreamTokenizer(br);
+		st.commentChar('#');
+		st.eolIsSignificant(true);
+		st.wordChars("_".getBytes()[0], "_".getBytes()[0]);
+
+		Settings assignment = null;
+		boolean assignValue = false;
+		Object value = null;
+
+		for (int tval; (tval = st.nextToken()) != StreamTokenizer.TT_EOF;)
+		{
+			if (tval == StreamTokenizer.TT_NUMBER)
+			{
+				if (assignValue)
+				{
+					value = st.nval;
+					Logger.info("Value \"" + st.nval + "\" found for setting "
+							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
+					if (assignment != null)
+						temp.put(assignment, value);
+				}
+			} else if (tval == StreamTokenizer.TT_WORD)
+			{
+				if (!assignValue)
+				{
+					for (Settings s : Settings.values())
+					{
+						Logger.info("Checking setting " + s.getName());
+
+						if (s.getName().equals(st.sval))
+						{
+							assignment = s;
+							Logger.info("Setting found: " + st.sval);
+						}
+					}
+				} else
+				{
+					switch (st.sval)
+					{
+					case "true":
+						value = (Boolean) true;
+						break;
+					case "false":
+						value = (Boolean) false;
+						break;
+					default:
+						value = st.sval;
+						break;
+					}
+					Logger.info("Value \"" + st.sval + "\" found for setting "
+							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
+					if (assignment != null)
+						temp.put(assignment, value);
+				}
+			} else if (tval == StreamTokenizer.TT_EOL)
+			{
+				assignValue = false;
+				assignment = null;
+			} else if ((char) st.ttype == '=' && assignment != null)
+			{
+				assignValue = true;
+				Logger.info("Assigning value ...");
+			}
+		}
+		for (Map.Entry<Settings, Object> m : temp.entrySet())
+		{
+			Logger.info(m.getKey().getName());
+		}
+		return temp;
 	}
 
 	public static DSManager getInstance()

@@ -368,11 +368,11 @@ public class ClientHandler
 			}
 			break;
 		case PRE2:
-			// if (networkphaseprogress.get(phase)[0] == false)
-			// {
-			// // do nothing
-			// } else
-			if (/*networkphaseprogress.get(phase)[1] == **/true)
+			 if (networkphaseprogress.get(phase)[0] == false)
+			 {
+			 // do nothing
+			 } else
+			if (networkphaseprogress.get(phase)[1] == true)
 			{
 				Logger.info("Logged in, advancing.");
 				Platform.runLater(new Runnable()
