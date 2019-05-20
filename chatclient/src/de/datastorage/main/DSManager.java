@@ -486,9 +486,19 @@ public class DSManager
 			{
 				if (assignValue)
 				{
-					value = st.nval;
-					Logger.info("Value \"" + st.nval + "\" found for setting "
+					if(((st.nval % 1) == 0))
+					{
+						value = new Integer(new Double(st.nval).intValue());
+					}
+					else
+					{
+						value = st.nval;
+					}
+					//value = ((st.nval % 1) == 0) ? new Integer(new Double(st.nval).intValue()) : st.nval;
+					Logger.info("Value \"" + value + "\" found for setting "
 							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
+					System.out.println((st.nval % 1 == 0));
+					System.out.println(value.getClass());
 					if (assignment != null)
 						temp.put(assignment, value);
 				}
