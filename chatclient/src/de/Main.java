@@ -132,7 +132,7 @@ public class Main extends Application
 	{
 		chatClientLoader = new FXMLLoader(getClass().getResource("chatclient/chatclient.fxml"));
 		Parent root = chatClientLoader.load();
-
+		
 		// initing scene
 		chatClientScene = new Scene(root);
 		chatClientScene.getStylesheets().add(Main.class.getResource("chatclient/chatclient.css").toExternalForm());
@@ -146,7 +146,7 @@ public class Main extends Application
 	
 	public void initSettings() throws IOException
 	{
-		settingsLoader = new FXMLLoader(Main.class.getResource("settings/settings.fxml"));
+		settingsLoader = new FXMLLoader(getClass().getResource("settings/settings.fxml"));
 		Parent root = settingsLoader.load();
 		
 		settingsScene = new Scene(root);
@@ -193,14 +193,23 @@ public class Main extends Application
 	
 	public void openSettings()
 	{
-		Stage newWindow = new Stage();
-		newWindow.setTitle("Settings");
-		newWindow.setScene(settingsScene);
-		
-		newWindow.setX(primaryStage.getX() + 200);
-		newWindow.setY(primaryStage.getY() + 200);
-		
-		newWindow.show();
+		new Thread(new Runnable(){
+
+
+			@Override
+			public void run()
+			{
+				Stage newWindow = new Stage();
+				newWindow.setTitle("Settings");
+				newWindow.setScene(registrationScene);
+				newWindow.initStyle(StageStyle.UNDECORATED);
+				
+				newWindow.setX(primaryStage.getX() + 200);
+				newWindow.setY(primaryStage.getY() + 200);
+				
+				newWindow.show();
+				
+			}}).start();
 	}
 	
 	public void addContact(Contact c)
