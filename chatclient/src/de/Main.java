@@ -38,12 +38,14 @@ public class Main extends Application
 	private FXMLLoader forgotPasswordLoader;
 	private FXMLLoader registrationLoader;
 	private FXMLLoader chatClientLoader;
+	private FXMLLoader settingsLoader;
 
 	private Scene loginScene;
 	private Scene forgotPasswordScene;
 	private Scene registrationScene;
 	private Scene chatClientScene;
-
+	private Scene settingsScene;
+	
 	private DSManager dsm;
 
 	public static InetSocketAddress server = new InetSocketAddress("cancersquad.dyn.ddnss.de", 55555);
@@ -74,29 +76,12 @@ public class Main extends Application
 				c.initConnection();
 			}
 		}, 2 * 1000);
-		try
-		{
-			DSManager.getInstance().editSetting(Settings.DEBUG, true);
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try
-		{
-			Logger.info("auasoignalöksdgjlasjlgjlagls" + DSManager.getInstance().getSetting(Settings.DEBUG).toString());
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
 	public void start(Stage stage) throws Exception
 	{
 		long old = System.currentTimeMillis();
-		Logger.info("yoyoyooyoyooyoyooyo");
 		Font.loadFont(Main.class.getResource("font.ttf").toExternalForm(), 10);
 		primaryStage = stage;
 		initLogin();
@@ -158,6 +143,15 @@ public class Main extends Application
 	{
 
 	}
+	
+	public void initSettings() throws IOException
+	{
+		settingsLoader = new FXMLLoader(Main.class.getResource("settings/settings.fxml"));
+		Parent root = settingsLoader.load();
+		
+		settingsScene = new Scene(root);
+		settingsScene.getStylesheets().add(Main.class.getResource("settings/settings.css").toExternalForm());
+	}
 
 	public void initInfopanels()
 	{
@@ -195,6 +189,18 @@ public class Main extends Application
 		default:
 			throw new RuntimeException();
 		}
+	}
+	
+	public void openSettings()
+	{
+		Stage newWindow = new Stage();
+		newWindow.setTitle("Settings");
+		newWindow.setScene(settingsScene);
+		
+		newWindow.setX(primaryStage.getX() + 200);
+		newWindow.setY(primaryStage.getY() + 200);
+		
+		newWindow.show();
 	}
 	
 	public void addContact(Contact c)

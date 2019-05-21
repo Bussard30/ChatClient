@@ -96,6 +96,12 @@ public class ChatclientController implements Initializable
 	{
 		Main.getInstance().getPrimaryStage().setIconified(true);
 	}
+	
+	@FXML
+	private void openSettings(MouseEvent event)
+	{
+		Main.getInstance().openSettings();
+	}
 
 	public void loadContacts(ObservableList<Contact> contacts)
 	{
@@ -109,4 +115,6 @@ public class ChatclientController implements Initializable
 		contacts.add(contact);
 		recentcontacts.setMaxHeight(contacts.size() * 40 + 5);
 	}
+	
+	
 }
