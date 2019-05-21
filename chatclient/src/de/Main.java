@@ -4,11 +4,13 @@
 
 package de;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.datastorage.main.DSManager;
+import de.datastorage.main.Settings;
 import de.networking.client.Client;
 import de.networking.logger.Logger;
 import de.types.Contact;
@@ -72,7 +74,22 @@ public class Main extends Application
 				c.initConnection();
 			}
 		}, 2 * 1000);
-
+		try
+		{
+			DSManager.getInstance().editSetting(Settings.DEBUG, true);
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try
+		{
+			Logger.info("auasoignalöksdgjlasjlgjlagls" + DSManager.getInstance().getSetting(Settings.DEBUG).toString());
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

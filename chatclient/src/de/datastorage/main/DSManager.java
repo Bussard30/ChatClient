@@ -425,7 +425,7 @@ public class DSManager
 
 		br.close();
 		pw.close();
-		Logger.info("Editing operation of setting \"" + set.getName() + "\" took "
+		Logger.info("Editing operation of setting \"" + set.getName() + "\" to the value " + value.toString() + " took "
 				+ Long.toOctalString(System.currentTimeMillis() - l) + "ms");
 		return true;
 	}
@@ -466,6 +466,87 @@ public class DSManager
 		br.close();
 	}
 
+	public Object getSetting(Settings set) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new FileReader(options));
+
+		StreamTokenizer st = new StreamTokenizer(br);
+		st.commentChar('#');
+		st.eolIsSignificant(true);
+		st.wordChars("_".getBytes()[0], "_".getBytes()[0]);
+
+		Settings assignment = null;
+		boolean assignValue = false;
+		Object value = null;
+
+		for (int tval; (tval = st.nextToken()) != StreamTokenizer.TT_EOF;)
+		{
+			if (tval == StreamTokenizer.TT_NUMBER)
+			{
+				if (assignValue)
+				{
+					if (((st.nval % 1) == 0))
+					{
+						value = new Integer(new Double(st.nval).intValue());
+					} else
+					{
+						value = st.nval;
+					}
+					// value = ((st.nval % 1) == 0) ? new Integer(new
+					// Double(st.nval).intValue()) : st.nval;
+					Logger.info("Value \"" + value + "\" found for setting "
+							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
+					System.out.println((st.nval % 1 == 0));
+					System.out.println(value.getClass());
+					if (assignment != null)
+						return value;
+				}
+			} else if (tval == StreamTokenizer.TT_WORD)
+			{
+				if (!assignValue)
+				{
+					for (Settings s : Settings.values())
+					{
+						Logger.info("Checking setting " + s.getName());
+
+						if (s.getName().equals(st.sval) && s.getName().equals(set.getName()))
+						{
+							assignment = s;
+							Logger.info("Setting found: " + st.sval);
+						}
+					}
+				} else
+				{
+					switch (st.sval)
+					{
+					case "true":
+						value = (Boolean) true;
+						break;
+					case "false":
+						value = (Boolean) false;
+						break;
+					default:
+						value = st.sval;
+						break;
+					}
+					Logger.info("Value \"" + st.sval + "\" found for setting "
+							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
+					if (assignment != null)
+						return value;
+				}
+			} else if (tval == StreamTokenizer.TT_EOL)
+			{
+				assignValue = false;
+				assignment = null;
+			} else if ((char) st.ttype == '=' && assignment != null)
+			{
+				assignValue = true;
+				Logger.info("Assigning value ...");
+			}
+		}
+		throw new RuntimeException();
+	}
+
 	public HashMap<Settings, Object> getValuesOfCurrentOptions() throws IOException
 	{
 		BufferedReader br = new BufferedReader(new FileReader(options));
@@ -486,15 +567,15 @@ public class DSManager
 			{
 				if (assignValue)
 				{
-					if(((st.nval % 1) == 0))
+					if (((st.nval % 1) == 0))
 					{
 						value = new Integer(new Double(st.nval).intValue());
-					}
-					else
+					} else
 					{
 						value = st.nval;
 					}
-					//value = ((st.nval % 1) == 0) ? new Integer(new Double(st.nval).intValue()) : st.nval;
+					// value = ((st.nval % 1) == 0) ? new Integer(new
+					// Double(st.nval).intValue()) : st.nval;
 					Logger.info("Value \"" + value + "\" found for setting "
 							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
 					System.out.println((st.nval % 1 == 0));

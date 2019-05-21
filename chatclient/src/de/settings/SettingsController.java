@@ -18,23 +18,15 @@
  */
 package de.settings;
 
+import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import de.Main;
-import de.networking.logger.Logger;
-import javafx.event.ActionEvent;
+import de.datastorage.main.DSManager;
+import de.datastorage.main.Settings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 
 /**
@@ -45,12 +37,33 @@ import javafx.scene.text.Text;
 public class SettingsController implements Initializable
 {
 
+//	@FXML
+//	private Text encryption;
 	/**
 	 * Initializes the controller class.
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-
+		HashMap<Settings, Object> hm = null;
+		
+		
+		try
+		{
+			hm = DSManager.getInstance().getValuesOfCurrentOptions();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		Boolean b = (Boolean)hm.get(Settings.ENCRYPTION);
+//		if(b)
+//		{
+//			encryption.setText("Aktiv");
+//		}
+//		else
+//		{
+//			encryption.setText("Nicht Aktiv");
+//		}
 	}
 }
