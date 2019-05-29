@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StreamTokenizer;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Vector;
 
 import javax.swing.filechooser.FileSystemView;
 
@@ -32,6 +34,10 @@ public class DSManager
 	private Calendar cal;
 	private SimpleDateFormat sdf;
 
+	private Thread t;
+	private boolean isLogging = true;
+	private volatile Vector<String> queue = new Vector<>();
+
 	public DSManager()
 	{
 		if (dsm == null)
@@ -42,6 +48,60 @@ public class DSManager
 			throw new RuntimeException("Already instantiated");
 		}
 		path = FileSystemView.getFileSystemView().getDefaultDirectory().getPath() + "\\" + "ChatClient";
+		t = new Thread(new Runnable()
+		{
+
+			@SuppressWarnings("unchecked")
+			/**
+			 * actually checked but eclipse annoys me and i don't want to have to configure problem severity 
+			 */
+			@Override
+			public void run()
+			{
+				Vector<String> temp = new Vector<>();
+				while (isLogging)
+				{
+					if (!queue.isEmpty())
+					{
+						for (String s : (Vector<String>) queue.clone())
+						{
+							if (s != null)
+							{
+								try
+								{
+									PrintWriter pw = new PrintWriter(new FileWriter(log, true));
+									pw.append(s);
+									pw.flush();
+									pw.close();
+									temp.add(s);
+								} catch (IOException e)
+								{
+									e.printStackTrace();
+								}
+							} else
+							{
+								temp.add(s);
+							}
+						}
+						for (String s : temp)
+						{
+							queue.removeElement(s);
+						}
+						temp.clear();
+					}
+					try
+					{
+						Thread.sleep(30);
+					} catch (InterruptedException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			}
+
+		});
 		init();
 		File f = new File(path);
 		if (!f.exists())
@@ -51,6 +111,7 @@ public class DSManager
 				throw new RuntimeException("Couldn't create directory");
 			}
 		}
+		t.start();
 	}
 
 	/**
@@ -320,10 +381,7 @@ public class DSManager
 	 */
 	public void appendLine(String s) throws FileNotFoundException
 	{
-		PrintWriter pw = new PrintWriter(new FileOutputStream(log, true));
-		pw.append(s);
-		pw.flush();
-		pw.close();
+		queue.add(s);
 	}
 
 	public void readOptions() throws IOException

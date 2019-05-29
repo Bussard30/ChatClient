@@ -18,6 +18,7 @@
  */
 package de.settings;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -27,7 +28,7 @@ import de.datastorage.main.DSManager;
 import de.datastorage.main.Settings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.text.Text;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -65,5 +66,17 @@ public class SettingsController implements Initializable
 //		{
 //			encryption.setText("Nicht Aktiv");
 //		}
+	}
+	
+	@FXML
+	public void minimize(MouseEvent e)
+	{
+		
+	}
+	
+	@FXML
+	private void close(MouseEvent event)
+	{
+		System.exit(0);
 	}
 }

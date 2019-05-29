@@ -9,11 +9,16 @@ import java.net.InetSocketAddress;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.chatclient.ChatclientController;
 import de.datastorage.main.DSManager;
-import de.datastorage.main.Settings;
+import de.forgotpassword.ForgotPasswordController;
+import de.login.LoginController;
 import de.networking.client.Client;
 import de.networking.logger.Logger;
+import de.register.RegisterController;
+import de.settings.SettingsController;
 import de.types.Contact;
+import de.types.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -46,6 +51,12 @@ public class Main extends Application
 	private Scene chatClientScene;
 	private Scene settingsScene;
 	
+	private ChatclientController ccc;
+	private ForgotPasswordController fpc;
+	private RegisterController rc;
+	private LoginController lc;
+	private SettingsController sc;
+
 	private DSManager dsm;
 
 	public static InetSocketAddress server = new InetSocketAddress("cancersquad.dyn.ddnss.de", 55555);
@@ -75,7 +86,7 @@ public class Main extends Application
 			{
 				c.initConnection();
 			}
-		}, 2 * 1000);
+		}, 1);
 	}
 
 	@Override
@@ -89,9 +100,11 @@ public class Main extends Application
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.show();
 		Logger.info("It took " + (System.currentTimeMillis() - old) + "ms");
+		old = System.currentTimeMillis();
 		initForgotPassword();
 		initRegistration();
 		initChatClient();
+		initSettings();
 		// TODO implementation of keepmeloggedin
 		//
 
@@ -105,6 +118,7 @@ public class Main extends Application
 		// initing loginScene for quick switches
 		loginScene = new Scene(root);
 		loginScene.getStylesheets().add(Main.class.getResource("login/login.css").toExternalForm());
+		lc = loginLoader.getController();
 	}
 
 	public void initForgotPassword() throws Exception
@@ -116,6 +130,7 @@ public class Main extends Application
 		forgotPasswordScene = new Scene(root);
 		forgotPasswordScene.getStylesheets()
 				.add(Main.class.getResource("forgotpassword/forgotpassword.css").toExternalForm());
+		fpc = forgotPasswordLoader.getController();
 	}
 
 	public void initRegistration() throws Exception
@@ -126,31 +141,34 @@ public class Main extends Application
 		// initing scene
 		registrationScene = new Scene(root);
 		registrationScene.getStylesheets().add(Main.class.getResource("register/register.css").toExternalForm());
+		rc = registrationLoader.getController();
 	}
 
 	public void initChatClient() throws Exception
 	{
 		chatClientLoader = new FXMLLoader(getClass().getResource("chatclient/chatclient.fxml"));
 		Parent root = chatClientLoader.load();
-		
+
 		// initing scene
 		chatClientScene = new Scene(root);
 		chatClientScene.getStylesheets().add(Main.class.getResource("chatclient/chatclient.css").toExternalForm());
 		chatClientScene.getStylesheets().add(Main.class.getResource("chatclient/contact/contact.css").toExternalForm());
+		ccc = chatClientLoader.getController();
 	}
 
 	public void initContacts()
 	{
 
 	}
-	
+
 	public void initSettings() throws IOException
 	{
 		settingsLoader = new FXMLLoader(getClass().getResource("settings/settings.fxml"));
 		Parent root = settingsLoader.load();
-		
+
 		settingsScene = new Scene(root);
 		settingsScene.getStylesheets().add(Main.class.getResource("settings/settings.css").toExternalForm());
+		sc = settingsLoader.getController();
 	}
 
 	public void initInfopanels()
@@ -162,7 +180,6 @@ public class Main extends Application
 	{
 
 	}
-	
 
 	/**
 	 * 
@@ -190,31 +207,33 @@ public class Main extends Application
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public void openSettings()
 	{
-		new Thread(new Runnable(){
 
+		Stage newWindow = new Stage();
+		newWindow.setScene(settingsScene);
+		
+		newWindow.setTitle("Settings");
+		newWindow.initStyle(StageStyle.UNDECORATED);
 
-			@Override
-			public void run()
-			{
-				Stage newWindow = new Stage();
-				newWindow.setTitle("Settings");
-				newWindow.setScene(registrationScene);
-				newWindow.initStyle(StageStyle.UNDECORATED);
-				
-				newWindow.setX(primaryStage.getX() + 200);
-				newWindow.setY(primaryStage.getY() + 200);
-				
-				newWindow.show();
-				
-			}}).start();
+		newWindow.setX(primaryStage.getX() + 200);
+		newWindow.setY(primaryStage.getY() + 200);
+
+		newWindow.show();
+
 	}
-	
+
 	public void addContact(Contact c)
 	{
-		
+
+	}
+	
+	public void setLocalUser(User u)
+	{
+		ccc.setProfilePic(u.getProfilepic());
+		ccc.setStatus(u.getStatus());
+		ccc.setUserName(u.getUsername());
 	}
 
 	/**

@@ -14,9 +14,12 @@ public abstract class Wrapper
 		{
 			for(Constructor<?> c : wrapper.getDeclaredConstructors())
 			{
-				if(c.getParameterTypes()[0].equals(String[].class) && c.getParameterTypes().length == 1)
+				if(c.getParameters().length != 0)
 				{
-					return (Wrapper) c.newInstance((Object)s);
+					if(c.getParameterTypes()[0].equals(String[].class) && c.getParameterTypes().length == 1)
+					{
+						return (Wrapper) c.newInstance((Object)s);
+					}
 				}
 			}
 		} catch (InstantiationException e)

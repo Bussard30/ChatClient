@@ -3,6 +3,7 @@
  */
 package de.chatclient;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -15,12 +16,16 @@ import de.types.Contact;
 import de.types.ContactViewCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -31,12 +36,21 @@ public class ChatclientController implements Initializable
 {
 	@FXML
 	ListView<Contact> recentcontacts;
-	
+
 	@FXML
 	Pane toppane;
-	
+
 	@FXML
 	AnchorPane anchorpane;
+
+	@FXML
+	ImageView profilepic;
+
+	@FXML
+	Text username;
+
+	@FXML
+	Text status;
 
 	private ObservableList<Contact> contacts;
 
@@ -62,7 +76,7 @@ public class ChatclientController implements Initializable
 	{
 		recentcontacts.setItems(contacts);
 		recentcontacts.setCellFactory(contactviewcell -> new ContactViewCell());
-		recentcontacts.setMaxHeight(contacts.size() * 46 + 2 );
+		recentcontacts.setMaxHeight(contacts.size() * 46 + 2);
 		Logger.info(String.valueOf(contacts.size() * 46 + 2));
 		Logger.info(String.valueOf(recentcontacts.getFixedCellSize()));
 		anchorpane.setMaxSize(900, 600);
@@ -96,7 +110,7 @@ public class ChatclientController implements Initializable
 	{
 		Main.getInstance().getPrimaryStage().setIconified(true);
 	}
-	
+
 	@FXML
 	private void openSettings(MouseEvent event)
 	{
@@ -115,6 +129,20 @@ public class ChatclientController implements Initializable
 		contacts.add(contact);
 		recentcontacts.setMaxHeight(contacts.size() * 40 + 5);
 	}
-	
-	
+
+	public void setProfilePic(BufferedImage bi)
+	{
+		profilepic.setImage(SwingFXUtils.toFXImage(bi, null));
+	}
+
+	public void setUserName(String username)
+	{
+		this.username.setText(username);
+	}
+
+	public void setStatus(String status)
+	{
+		this.status.setText((status.length() < 25) ? status : status.substring(0, 25));
+	}
+
 }

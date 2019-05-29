@@ -25,11 +25,13 @@ import javax.crypto.Cipher;
 
 import de.Main;
 import de.networking.logger.Logger;
+import de.types.User;
 import javafx.application.Platform;
 import networking.exceptions.BadPacketException;
 import networking.types.CredentialsWrapper;
 import networking.types.LoginResponseWrapper;
 import networking.types.MessageWrapper;
+import networking.types.ProfileInfoWrapper;
 import networking.types.ProtocolWrapper;
 import networking.types.Request;
 import networking.types.Response;
@@ -53,6 +55,8 @@ public class ClientHandler
 
 	private NetworkPhases phase;
 	private HashMap<NetworkPhases, boolean[]> networkphaseprogress;
+
+	private User u;
 
 	public ClientHandler(Socket s)
 	{
@@ -129,12 +133,12 @@ public class ClientHandler
 			Logger.info("Already sent user credentials!");
 		}
 	}
-	
+
 	public void sendMessage(MessageWrapper m)
 	{
-		//TODO
+		// TODO
 	}
-	
+
 	public void run() throws Exception
 	{
 		byte b[] = null;
@@ -186,6 +190,7 @@ public class ClientHandler
 							switch (r)
 							{
 							case TRSMT_KEY:
+								// deprecated
 								break;
 							default:
 								break;
@@ -320,6 +325,20 @@ public class ClientHandler
 									}
 								}
 								break;
+							case RSP_DATA:
+								if (((Response) o).getBuffer() instanceof ProfileInfoWrapper)
+								{
+									if (((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
+											.getProfilepic() != null
+											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
+													.getUsername() != null
+											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
+													.getStatus() != null)
+									{
+										
+									}
+								}
+								break;
 							default:
 								Logger.info(r.getName() + " in pre1");
 								break;
@@ -328,7 +347,6 @@ public class ClientHandler
 					}
 					break;
 				case COM:
-
 					break;
 				case POST:
 
@@ -368,11 +386,10 @@ public class ClientHandler
 			}
 			break;
 		case PRE2:
-			 if (networkphaseprogress.get(phase)[0] == false)
-			 {
-			 // do nothing
-			 } else
-			if (networkphaseprogress.get(phase)[1] == true)
+			if (networkphaseprogress.get(phase)[0] == false)
+			{
+				// do nothing
+			} else if (networkphaseprogress.get(phase)[1] == true)
 			{
 				Logger.info("Logged in, advancing.");
 				Platform.runLater(new Runnable()
@@ -388,7 +405,11 @@ public class ClientHandler
 			}
 			break;
 		case COM:
-
+			if (networkphaseprogress.get(phase)[0] == false)
+			{
+				send(new Request(Requests.REQST_DATA.getName(), null));
+				networkphaseprogress.get(phase)[0] = true;
+			}
 			break;
 		case POST:
 			// actually i dont think this phase is strictly necessary but well
@@ -586,7 +607,10 @@ public class ClientHandler
 
 	private String[] getStrings(Object o) throws UnsupportedEncodingException
 	{
-
+		if(o == null)
+		{
+			return new String[]{"null"};
+		}
 		if (o instanceof Wrapper)
 		{
 			return ((networking.types.Wrapper) o).getStrings();
@@ -656,7 +680,7 @@ public class ClientHandler
 	private Object deserialize(byte[] b) throws UnsupportedEncodingException, BadPacketException
 	{
 		String s = new String(b, "UTF8");
-		Logger.info(s);
+		Logger.info("Deserializing string: " + s);
 		String[] temp = s.split(";");
 		String[] info = new String[]
 		{ temp[0], temp[1] };
@@ -691,6 +715,14 @@ public class ClientHandler
 						{
 							e.printStackTrace();
 						}
+					} else
+					{
+						String stemp = null;
+						for (String c : data)
+						{
+							stemp += c;
+						}
+						return new Request(info[1], stemp);
 					}
 				}
 			}
@@ -720,6 +752,14 @@ public class ClientHandler
 						{
 							e.printStackTrace();
 						}
+					} else
+					{
+						String stemp = null;
+						for (String c : data)
+						{
+							stemp += c;
+						}
+						return new Response(info[1], stemp);
 					}
 				}
 			}

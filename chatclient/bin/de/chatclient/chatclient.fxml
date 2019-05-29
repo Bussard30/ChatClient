@@ -11,14 +11,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.211" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
+<AnchorPane id="AnchorPane" fx:id="anchorpane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.ChatclientController">
     <stylesheets>
         <URL value="@chatclient.css" />
     </stylesheets>
    <children>
       <Pane id="leftside" layoutY="20.0" prefHeight="580.0" prefWidth="210.0" styleClass="leftside">
          <children>
-            <Text fill="#eeeded" layoutX="41.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
+            <Text fx:id="username" fill="#eeeded" layoutX="41.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
                <font>
                   <Font size="18.0" />
                </font></Text>
@@ -52,7 +52,7 @@
                   <FontAwesomeIconView fill="#eeeded" glyphName="GEAR" layoutX="8.0" layoutY="16.0" onMouseReleased="#openSettings" scaleX="1.5" scaleY="1.5" />
                </children>
             </Pane>
-            <ImageView fitHeight="21.0" fitWidth="24.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="profilepic" fitHeight="21.0" fitWidth="24.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
             <Text fill="#eeeded" layoutX="13.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" wrappingWidth="183.13671875">
                <font>
                   <Font size="14.0" />

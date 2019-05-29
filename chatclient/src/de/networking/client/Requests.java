@@ -24,6 +24,7 @@ public enum Requests
 	
 	TRSMT_MESSAGE("TRSMT_MESSAGE", NetworkPhases.COM, MessageWrapper.class),
 	
+	REQST_DATA("REQST_DATA", NetworkPhases.COM, Object.class),
 	
 	;
 
