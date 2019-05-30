@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.security.GeneralSecurityException;
+import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -21,13 +22,19 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.HashMap;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 import de.Main;
 import de.networking.logger.Logger;
 import de.types.User;
 import javafx.application.Platform;
 import networking.exceptions.BadPacketException;
+import networking.types.AESKeyWrapper;
 import networking.types.CredentialsWrapper;
 import networking.types.LoginResponseWrapper;
 import networking.types.MessageWrapper;
@@ -57,6 +64,9 @@ public class ClientHandler
 	private HashMap<NetworkPhases, boolean[]> networkphaseprogress;
 
 	private User u;
+
+	private KeyGenerator keygen;
+	private SecretKey AESKey;
 
 	public ClientHandler(Socket s)
 	{
@@ -92,6 +102,17 @@ public class ClientHandler
 		KeyPair kp = kpg.generateKeyPair();
 		pub0 = kp.getPublic();
 		pvt = kp.getPrivate();
+
+		try
+		{
+			keygen = KeyGenerator.getInstance("AES");
+		} catch (NoSuchAlgorithmException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		keygen.init(128);
+		AESKey = keygen.generateKey();
 
 		networkphaseprogress = new HashMap<NetworkPhases, boolean[]>();
 		phase = NetworkPhases.PRE0;
@@ -170,10 +191,21 @@ public class ClientHandler
 					//
 				}
 			}
-			if (phase != NetworkPhases.PRE0)
+
+			Logger.info("Decrypting in phase " + phase.name());
+			if (phase == NetworkPhases.COM)
 			{
-				Logger.info("Decrypting in phase " + (phase == NetworkPhases.PRE0 ? "pre0" : "some other phase"));
-				b = decrypt(pvt, b);
+				b = decrypt(AESKey, b);
+
+			} else if (phase == NetworkPhases.PRE2 || phase == NetworkPhases.POST)
+			{
+				b = decrypt(AESKey, b);
+			} else if (phase == NetworkPhases.PRE1)
+			{
+				if (networkphaseprogress.get(phase)[0])
+				{
+					b = decrypt(AESKey, b);
+				}
 			}
 
 			Object o = deserialize(b);
@@ -189,7 +221,7 @@ public class ClientHandler
 						{
 							switch (r)
 							{
-							case TRSMT_KEY:
+							case TRSMT_RSAKEY:
 								// deprecated
 								break;
 							default:
@@ -227,7 +259,7 @@ public class ClientHandler
 						{
 							switch (r)
 							{
-							case RSP_KEY:
+							case RSP_RSAKEY:
 								if (((Response) o).getBuffer() instanceof PublicKey)
 								{
 									Logger.info(s.getInetAddress().getHostAddress(), "Received Key.");
@@ -266,7 +298,7 @@ public class ClientHandler
 									} else
 									{
 										Logger.info("Protocol version en par with server!");
-										networkphaseprogress.get(phase)[1] = true;
+										networkphaseprogress.get(phase)[2] = true;
 									}
 									if (!((ProtocolWrapper) ((Response) o).getBuffer()).getClientVersion()
 											.equals(Main.protocol.getClientVersion()))
@@ -325,20 +357,7 @@ public class ClientHandler
 									}
 								}
 								break;
-							case RSP_DATA:
-								if (((Response) o).getBuffer() instanceof ProfileInfoWrapper)
-								{
-									if (((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
-											.getProfilepic() != null
-											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
-													.getUsername() != null
-											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
-													.getStatus() != null)
-									{
-										
-									}
-								}
-								break;
+
 							default:
 								Logger.info(r.getName() + " in pre1");
 								break;
@@ -347,6 +366,41 @@ public class ClientHandler
 					}
 					break;
 				case COM:
+					for (Responses r : Responses.values())
+					{
+						if (r.getName().equals(((Response) o).getName()))
+						{
+							switch (r)
+							{
+							case RSP_DATA:
+								Logger.info("Received user");
+								if (((Response) o).getBuffer() instanceof ProfileInfoWrapper)
+								{
+									Logger.info("yo");
+									Logger.info(String.valueOf(((ProfileInfoWrapper) ((Response) o).getBuffer())
+											.getUser().getProfilepic()));
+									Logger.info(String.valueOf(
+											((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser().getUsername()));
+									Logger.info("status: " + String.valueOf(
+											((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser().getStatus()));
+									
+									if (((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
+											.getProfilepic() != null
+											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
+													.getUsername() != null
+											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
+													.getStatus() != null)
+									{
+										Main.getInstance().setLocalUser(
+												(((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()));
+									}
+								}
+								break;
+							default:
+								break;
+							}
+						}
+					}
 					break;
 				case POST:
 
@@ -358,10 +412,11 @@ public class ClientHandler
 			{
 				// throw new BadPacketException();
 			}
-		}
-		// initiating stuff
 
+			// initiating stuff
+		}
 		switch (phase)
+
 		{
 		case PRE0:
 			if (networkphaseprogress.get(phase)[0])
@@ -372,17 +427,22 @@ public class ClientHandler
 
 			break;
 		case PRE1:
-
-			if (networkphaseprogress.get(phase)[1] == true)
+			if (!networkphaseprogress.get(phase)[0] && !networkphaseprogress.get(phase)[1])
+			{
+				Logger.info("Sending AES key..");
+				send(new Request(Requests.TRSMT_AESKEY.getName(), new AESKeyWrapper(AESKey)));
+				networkphaseprogress.get(phase)[0] = true;
+				networkphaseprogress.get(phase)[1] = false;
+			}
+			if (networkphaseprogress.get(phase)[2] && networkphaseprogress.get(phase)[0])
 			{
 				Logger.info("advance");
 				advance();
-			} else if (networkphaseprogress.get(phase)[0] == false)
+			} else if (!networkphaseprogress.get(phase)[2] && networkphaseprogress.get(phase)[0])
 			{
 				Logger.info("Sending protocol !");
-				ProtocolWrapper p = Main.protocol;
-				send(new Request(Requests.TRSMT_PROTOCOL.getName(), p));
-				networkphaseprogress.get(phase)[0] = true;
+				send(new Request(Requests.TRSMT_PROTOCOL.getName(), Main.protocol));
+				networkphaseprogress.get(phase)[1] = true;
 			}
 			break;
 		case PRE2:
@@ -427,7 +487,7 @@ public class ClientHandler
 		{
 		case PRE0:
 			networkphaseprogress.remove(phase);
-			networkphaseprogress.put(NetworkPhases.PRE1, new boolean[2]);
+			networkphaseprogress.put(NetworkPhases.PRE1, new boolean[5]);
 			phase = NetworkPhases.PRE1;
 			for (int i = 0; i < networkphaseprogress.get(phase).length; i++)
 			{
@@ -514,7 +574,7 @@ public class ClientHandler
 
 	public void send(Request r) throws Exception
 	{
-		if (phase != NetworkPhases.PRE0)
+		if (phase == NetworkPhases.COM)
 		{
 			String[] sa = getStrings(r.getBuffer());
 			String s = null;
@@ -531,10 +591,11 @@ public class ClientHandler
 				}
 			}
 			Logger.info("Sending " + s);
-			byte[] b0 = encrypt(pub1, s.getBytes("UTF8"));
+			byte[] b0 = encrypt(AESKey, s.getBytes("UTF8"));
 			out.writeInt(b0.length);
 			out.write(b0);
-		} else
+
+		} else if (phase == NetworkPhases.PRE2 || phase == NetworkPhases.COM)
 		{
 			String[] sa = getStrings(r.getBuffer());
 			String s = null;
@@ -550,18 +611,85 @@ public class ClientHandler
 					s = s + ";" + sa[i];
 				}
 			}
+			Logger.info("Sending " + s);
+			byte[] b0 = encrypt(AESKey, s.getBytes("UTF8"));
+			out.writeInt(b0.length);
+			out.write(b0);
 
+		} else if (phase == NetworkPhases.PRE1)
+		{
+			if (networkphaseprogress.get(phase)[0])
+			{
+				String[] sa = getStrings(r.getBuffer());
+				String s = null;
+				if (sa.length == 1)
+				{
+					s = "Req;" + r.getName();
+					s = s + ";" + sa[0];
+				} else if (sa.length > 1)
+				{
+					s = "Req;" + r.getName();
+					for (int i = 0; i < sa.length; i++)
+					{
+						s = s + ";" + sa[i];
+					}
+				}
+				Logger.info("Sending " + s);
+				byte[] b0 = encrypt(AESKey, s.getBytes("UTF8"));
+				out.writeInt(b0.length);
+				out.write(b0);
+			} else
+			{
+				String[] sa = getStrings(r.getBuffer());
+				String s = null;
+				if (sa.length == 1)
+				{
+					s = "Req;" + r.getName();
+					s = s + ";" + sa[0];
+				} else if (sa.length > 1)
+				{
+					s = "Req;" + r.getName();
+					for (int i = 0; i < sa.length; i++)
+					{
+						s = s + ";" + sa[i];
+					}
+				}
+				Logger.info("Sending " + s);
+				byte[] b0 = s.getBytes("UTF8");
+				out.writeInt(b0.length);
+				out.write(b0);
+			}
+		} else if (phase == NetworkPhases.PRE0)
+		{
+			String[] sa = getStrings(r.getBuffer());
+			String s = null;
+			if (sa.length == 1)
+			{
+				s = "Req;" + r.getName();
+				s = s + ";" + sa[0];
+			} else if (sa.length > 1)
+			{
+				s = "Req;" + r.getName();
+				for (int i = 0; i < sa.length; i++)
+				{
+					s = s + ";" + sa[i];
+				}
+			}
 			Logger.info("Sending " + s);
 			byte[] b0 = s.getBytes("UTF8");
 			out.writeInt(b0.length);
 			out.write(b0);
+
+		} else
+		{
+			Logger.info("Unknown phase.");
 		}
 		out.flush();
 	}
 
 	public void send(Response r) throws Exception
 	{
-		if (phase != NetworkPhases.PRE0)
+		if (phase == NetworkPhases.COM)
 		{
 			String[] sa = getStrings(r.getBuffer());
 			String s = null;
@@ -578,10 +706,75 @@ public class ClientHandler
 				}
 			}
 			Logger.info("Sending " + s);
-			byte[] b0 = encrypt(pub1, s.getBytes("UTF8"));
+			byte[] b0 = encrypt(AESKey, s.getBytes("UTF8"));
 			out.writeInt(b0.length);
 			out.write(b0);
-		} else
+
+		} else if (phase == NetworkPhases.PRE2 || phase == NetworkPhases.COM)
+		{
+			String[] sa = getStrings(r.getBuffer());
+			String s = null;
+			if (sa.length == 1)
+			{
+				s = "Res;" + r.getName();
+				s = s + ";" + sa[0];
+			} else if (sa.length > 1)
+			{
+				s = "Res;" + r.getName();
+				for (int i = 0; i < sa.length; i++)
+				{
+					s = s + ";" + sa[i];
+				}
+			}
+			Logger.info("Sending " + s);
+			byte[] b0 = encrypt(AESKey, s.getBytes("UTF8"));
+			out.writeInt(b0.length);
+			out.write(b0);
+
+		} else if (phase == NetworkPhases.PRE1)
+		{
+			if (networkphaseprogress.get(phase)[0])
+			{
+				String[] sa = getStrings(r.getBuffer());
+				String s = null;
+				if (sa.length == 1)
+				{
+					s = "Res;" + r.getName();
+					s = s + ";" + sa[0];
+				} else if (sa.length > 1)
+				{
+					s = "Res;" + r.getName();
+					for (int i = 0; i < sa.length; i++)
+					{
+						s = s + ";" + sa[i];
+					}
+				}
+				Logger.info("Sending " + s);
+				byte[] b0 = encrypt(AESKey, s.getBytes("UTF8"));
+				out.writeInt(b0.length);
+				out.write(b0);
+			} else
+			{
+				String[] sa = getStrings(r.getBuffer());
+				String s = null;
+				if (sa.length == 1)
+				{
+					s = "Res;" + r.getName();
+					s = s + ";" + sa[0];
+				} else if (sa.length > 1)
+				{
+					s = "Res;" + r.getName();
+					for (int i = 0; i < sa.length; i++)
+					{
+						s = s + ";" + sa[i];
+					}
+				}
+				Logger.info("Sending " + s);
+				byte[] b0 = s.getBytes("UTF8");
+				out.writeInt(b0.length);
+				out.write(b0);
+			}
+		} else if (phase == NetworkPhases.PRE0)
 		{
 			String[] sa = getStrings(r.getBuffer());
 			String s = null;
@@ -601,15 +794,20 @@ public class ClientHandler
 			byte[] b0 = s.getBytes("UTF8");
 			out.writeInt(b0.length);
 			out.write(b0);
+
+		} else
+		{
+			Logger.info("Unknown phase.");
 		}
 		out.flush();
 	}
 
 	private String[] getStrings(Object o) throws UnsupportedEncodingException
 	{
-		if(o == null)
+		if (o == null)
 		{
-			return new String[]{"null"};
+			return new String[]
+			{ "null" };
 		}
 		if (o instanceof Wrapper)
 		{
@@ -677,6 +875,22 @@ public class ClientHandler
 		return cipher.doFinal(encrypted);
 	}
 
+	public static byte[] encrypt(SecretKey key, byte[] msg) throws NoSuchAlgorithmException, NoSuchPaddingException,
+			IllegalBlockSizeException, BadPaddingException, InvalidKeyException
+	{
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.ENCRYPT_MODE, key);
+		return cipher.doFinal(msg);
+	}
+
+	public static byte[] decrypt(SecretKey key, byte[] encrypted) throws NoSuchAlgorithmException,
+			NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException
+	{
+		Cipher cipher = Cipher.getInstance("AES");
+		cipher.init(Cipher.DECRYPT_MODE, key);
+		return cipher.doFinal(encrypted);
+	}
+
 	private Object deserialize(byte[] b) throws UnsupportedEncodingException, BadPacketException
 	{
 		String s = new String(b, "UTF8");
@@ -739,7 +953,8 @@ public class ClientHandler
 					{
 						if (r.getType().getSuperclass().equals(Wrapper.class))
 						{
-							Logger.info("ya");
+							Logger.info("Getting wrapper...");
+							Logger.info(r.getType().getName());
 							return new Response(info[1],
 									Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
 						}

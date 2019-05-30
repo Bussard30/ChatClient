@@ -231,6 +231,7 @@ public class Main extends Application
 	
 	public void setLocalUser(User u)
 	{
+		Logger.info(u.getStatus());
 		ccc.setProfilePic(u.getProfilepic());
 		ccc.setStatus(u.getStatus());
 		ccc.setUserName(u.getUsername());

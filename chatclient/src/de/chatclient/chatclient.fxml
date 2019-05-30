@@ -3,11 +3,11 @@
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -52,8 +52,7 @@
                   <FontAwesomeIconView fill="#eeeded" glyphName="GEAR" layoutX="8.0" layoutY="16.0" onMouseReleased="#openSettings" scaleX="1.5" scaleY="1.5" />
                </children>
             </Pane>
-            <ImageView fx:id="profilepic" fitHeight="21.0" fitWidth="24.0" layoutX="11.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-            <Text fill="#eeeded" layoutX="13.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" wrappingWidth="183.13671875">
+            <Text fx:id="status" fill="#eeeded" layoutX="13.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" wrappingWidth="183.13671875">
                <font>
                   <Font size="14.0" />
                </font>
@@ -64,6 +63,7 @@
                   <Font name="Ebrima" size="12.0" />
                </font>
             </Text>
+            <Circle fx:id="profilepic" fill="DODGERBLUE" layoutX="21.0" layoutY="22.0" radius="15.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </Pane>
       <Pane id="topbar" fx:id="toppane" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css">

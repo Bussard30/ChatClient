@@ -20,11 +20,12 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
 /**
@@ -44,7 +45,7 @@ public class ChatclientController implements Initializable
 	AnchorPane anchorpane;
 
 	@FXML
-	ImageView profilepic;
+	Circle profilepic;
 
 	@FXML
 	Text username;
@@ -132,17 +133,23 @@ public class ChatclientController implements Initializable
 
 	public void setProfilePic(BufferedImage bi)
 	{
-		profilepic.setImage(SwingFXUtils.toFXImage(bi, null));
+		Logger.info("yaaaaa");
+		profilepic.setFill(new ImagePattern(SwingFXUtils.toFXImage(bi, null)));
+		profilepic.setStyle("-fx-border-width: 0;");
+		profilepic.setStroke(Color.TRANSPARENT);
+		
 	}
 
 	public void setUserName(String username)
 	{
+		Logger.info("yaaaaa");
 		this.username.setText(username);
 	}
 
 	public void setStatus(String status)
 	{
-		this.status.setText((status.length() < 25) ? status : status.substring(0, 25));
+		Logger.info("yaaaaa");
+		this.status.setText(status);
 	}
 
 }

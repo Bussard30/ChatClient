@@ -21,6 +21,7 @@ public class User
 		this.username = username;
 		this.password = password;
 		this.setProfilepic(profilepic);
+		this.status = status;
 		this.date = date;
 		this.uuid = uuid;
 	}

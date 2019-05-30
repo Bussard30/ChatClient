@@ -6,12 +6,14 @@ import networking.types.LoginResponseWrapper;
 import networking.types.MessageWrapper;
 import networking.types.ProfileInfoWrapper;
 import networking.types.ProtocolWrapper;
-import networking.types.TokenWrapper;
 
 public enum Responses
 {
 	// RESPONSE TO KEY (exchange)
-	RSP_KEY("RSP_KEY", NetworkPhases.PRE0, PublicKey.class),
+	RSP_RSAKEY("RSP_RSAKEY", NetworkPhases.PRE0, PublicKey.class),
+	
+//	// RESPONSE TO AES KEY (exchange)
+//	RSP_AESKEY("RSP_AESKEY", NetworkPhases.PRE0, Object.class),
 
 	// RESPONSE TO PROTOCOL
 	RSP_PROTOCOL("RSP_PROTOCOL", NetworkPhases.PRE1, ProtocolWrapper.class),

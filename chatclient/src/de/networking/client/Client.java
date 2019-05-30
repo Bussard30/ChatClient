@@ -177,7 +177,7 @@ public class Client
 		try
 		{
 			Logger.info("Sending request");
-			sendRequest(new Request(Requests.TRSMT_KEY.getName(), getPublicKey()));
+			sendRequest(new Request(Requests.TRSMT_RSAKEY.getName(), getPublicKey()));
 		} catch (Exception e)
 		{
 			// TODO Auto-generated catch block
