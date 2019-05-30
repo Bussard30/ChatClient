@@ -13,13 +13,11 @@
 
 .close:hover
 {
-    -fx-background-color: ff3333;
     -fx-cursor: hand;
 }
 
 .minimize:hover
 {
-    -fx-background-color: #555555;
     -fx-cursor: hand;
 }
 

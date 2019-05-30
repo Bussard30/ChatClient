@@ -69,12 +69,12 @@
       </Pane>
       <Pane id="topbar" fx:id="toppane" onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="900.0" styleClass="topbar" stylesheets="@chatclient.css">
          <children>
-            <Pane id="close" layoutX="870.0" onMouseReleased="#close" prefHeight="20.0" prefWidth="30.0" styleClass="close" stylesheets="@chatclient.css">
+            <Pane id="close" fx:id="close_bg" layoutX="870.0" onMouseEntered="#hover_close" onMouseExited="#leave_close" onMouseReleased="#close" prefHeight="20.0" prefWidth="30.0" styleClass="close" stylesheets="@chatclient.css">
                <children>
                   <FontAwesomeIconView fill="#eeeded" glyphName="CLOSE" layoutX="10.0" layoutY="14.0" scaleX="1.5" scaleY="1.5" />
                </children>
             </Pane>
-            <Pane id="minimize" layoutX="840.0" onMouseReleased="#minimize" prefHeight="20.0" prefWidth="30.0" styleClass="minimize" stylesheets="@chatclient.css">
+            <Pane id="minimize" layoutX="840.0" onMouseEntered="#hover_minimize" onMouseExited="#leave_minimize" onMouseReleased="#minimize" prefHeight="20.0" prefWidth="30.0" styleClass="minimize" stylesheets="@chatclient.css">
                <children>
                   <Text fill="#eeeded" layoutX="12.0" layoutY="9.0" scaleX="2.0" strokeType="OUTSIDE" strokeWidth="0.0" text="_" />
                </children>
