@@ -52,6 +52,9 @@ public class ChatclientController implements Initializable
 
 	@FXML
 	Text status;
+	
+	@FXML
+	Circle online_status;
 
 	private ObservableList<Contact> contacts;
 
