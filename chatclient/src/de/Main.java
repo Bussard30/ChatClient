@@ -236,7 +236,11 @@ public class Main extends Application
 		ccc.setStatus(u.getStatus());
 		ccc.setUserName(u.getUsername());
 	}
-
+	
+	public void wrongPassword()
+	{
+		lc.wrongPassword();
+	}
 	/**
 	 * @param args
 	 *            the command line arguments

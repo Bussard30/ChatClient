@@ -336,6 +336,7 @@ public class ClientHandler
 									{
 										Logger.info("Wrong user credentials");
 										networkphaseprogress.get(phase)[0] = false;
+										Main.getInstance().wrongPassword();
 									} else
 									{
 										Logger.info("Right user credentials! Received token!");

@@ -27,6 +27,7 @@ import de.networking.logger.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -79,8 +80,7 @@ public class LoginController implements Initializable
 	@FXML
 	private void commitKey(KeyEvent event)
 	{
-		Region r = (Region) event.getSource();
-		r.setStyle("-fx-border-width: 0 0 0 0;");
+		((Region) event.getSource()).setStyle("-fx-border-width: 0 0 0 0;");
 		if (event.getCode() == KeyCode.ENTER)
 		{
 			login();
@@ -105,7 +105,7 @@ public class LoginController implements Initializable
 
 	@FXML
 	private Text fp;
-	
+
 	@FXML
 	private void fpentered(MouseEvent event)
 	{
@@ -120,7 +120,7 @@ public class LoginController implements Initializable
 
 	@FXML
 	private Text r;
-	
+
 	@FXML
 	private void rentered(MouseEvent event)
 	{
@@ -153,7 +153,7 @@ public class LoginController implements Initializable
 	}
 
 	@FXML
-	private void resetBorder(ActionEvent event)
+	private void resetBorder(Event event)
 	{
 		Region r = (Region) event.getSource();
 		r.setStyle("-fx-border-width: 0 0 0 0;");
@@ -168,18 +168,33 @@ public class LoginController implements Initializable
 		Logger.info(user.getText());
 		Logger.info(pw.getText());
 		Logger.info(cb.isSelected() ? "Keep logged in !" : "Do not keep logged in!");
-		
-		Client.getInstance().transmitCreds(user.getText(), pw.getText(), cb.isSelected());
-		
-		if (pw.getText().toLowerCase().contains("password"))
+
+		if (pw.getText().length() == 0 && user.getText().length() == 0)
 		{
 			((PasswordField) Main.getInstance().getLoginLoader().getNamespace().get("password"))
 					.setStyle("-fx-border-color: red;\n -fx-border-width: 2;\n -fx-border-radius: 2");
-		}
-		if (user.getText().length() != 0 && pw.getText().length() != 0)
+			((TextField) Main.getInstance().getLoginLoader().getNamespace().get("username"))
+					.setStyle("-fx-border-color: red;\n -fx-border-width: 2;\n -fx-border-radius: 2");
+		} else if (pw.getText().length() == 0)
 		{
-
+			((PasswordField) Main.getInstance().getLoginLoader().getNamespace().get("password"))
+					.setStyle("-fx-border-color: red;\n -fx-border-width: 2;\n -fx-border-radius: 2");
+		} else if (user.getText().length() == 0)
+		{
+			((TextField) Main.getInstance().getLoginLoader().getNamespace().get("username"))
+					.setStyle("-fx-border-color: red;\n -fx-border-width: 2;\n -fx-border-radius: 2");
+		} else
+		{
+			Client.getInstance().transmitCreds(user.getText(), pw.getText(), cb.isSelected());
 		}
+	}
+
+	public void wrongPassword()
+	{
+		((PasswordField) Main.getInstance().getLoginLoader().getNamespace().get("password"))
+				.setStyle("-fx-border-color: red;\n -fx-border-width: 2;\n -fx-border-radius: 2");
+		((TextField) Main.getInstance().getLoginLoader().getNamespace().get("username"))
+				.setStyle("-fx-border-color: red;\n -fx-border-width: 2;\n -fx-border-radius: 2");
 	}
 
 }
