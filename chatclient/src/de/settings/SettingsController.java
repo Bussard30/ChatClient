@@ -24,6 +24,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import de.Main;
 import de.datastorage.main.DSManager;
 import de.datastorage.main.Settings;
 import javafx.fxml.FXML;
@@ -77,6 +78,6 @@ public class SettingsController implements Initializable
 	@FXML
 	private void close(MouseEvent event)
 	{
-		System.exit(0);
+		Main.getInstance().closeSettings();
 	}
 }

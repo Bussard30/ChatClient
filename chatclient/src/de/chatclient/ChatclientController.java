@@ -94,8 +94,8 @@ public class ChatclientController implements Initializable
 	{
 		recentcontacts.setItems(contacts);
 		recentcontacts.setCellFactory(contactviewcell -> new ContactViewCell());
-		recentcontacts.setMaxHeight(contacts.size() * 46 + 2);
-		Logger.info(String.valueOf(contacts.size() * 46 + 2));
+		recentcontacts.setMaxHeight(contacts.size() * 46 + 4);
+		Logger.info(String.valueOf(contacts.size() * 46 + 4));
 		Logger.info(String.valueOf(recentcontacts.getFixedCellSize()));
 		anchorpane.setMaxSize(900, 600);
 	}
@@ -149,7 +149,6 @@ public class ChatclientController implements Initializable
 	@FXML
 	private void hover_close(MouseEvent event)
 	{
-
 		animate(c0, c2, close_bg);
 	}
 
@@ -212,18 +211,17 @@ public class ChatclientController implements Initializable
 	{
 		recentcontacts.setItems(contacts);
 		this.contacts = contacts;
-		recentcontacts.setMaxHeight(contacts.size() * 40 + 5);
+		recentcontacts.setMaxHeight(contacts.size() *  46 + 4);
 	}
 
 	public void addContact(Contact contact)
 	{
 		contacts.add(contact);
-		recentcontacts.setMaxHeight(contacts.size() * 40 + 5);
+		recentcontacts.setMaxHeight(contacts.size() *  46 + 4);
 	}
 
 	public void setProfilePic(BufferedImage bi)
 	{
-		Logger.info("yaaaaa");
 		profilepic.setFill(new ImagePattern(SwingFXUtils.toFXImage(bi, null)));
 		profilepic.setStyle("-fx-border-width: 0;");
 		profilepic.setStroke(Color.TRANSPARENT);
@@ -232,13 +230,11 @@ public class ChatclientController implements Initializable
 
 	public void setUserName(String username)
 	{
-		Logger.info("yaaaaa");
 		this.username.setText(username);
 	}
 
 	public void setStatus(String status)
 	{
-		Logger.info("yaaaaa");
 		this.status.setText(status);
 	}
 

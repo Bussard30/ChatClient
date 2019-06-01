@@ -53,7 +53,8 @@ public class DSManager
 
 			@SuppressWarnings("unchecked")
 			/**
-			 * actually checked but eclipse annoys me and i don't want to have to configure problem severity 
+			 * actually checked but eclipse annoys me and i don't want to have
+			 * to configure problem severity
 			 */
 			@Override
 			public void run()
@@ -415,12 +416,9 @@ public class DSManager
 				{
 					for (Settings s : Settings.values())
 					{
-						Logger.info("Checking setting " + s.getName());
-
 						if (s.getName().equals(st.sval))
 						{
 							assignment = s;
-							Logger.info("Setting found: " + st.sval);
 						}
 					}
 				} else
@@ -437,8 +435,6 @@ public class DSManager
 						value = st.sval;
 						break;
 					}
-					Logger.info("Value \"" + st.sval + "\" found for setting "
-							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
 					if (assignment != null)
 						settings.put(assignment, value);
 				}
@@ -449,7 +445,6 @@ public class DSManager
 			} else if ((char) st.ttype == '=' && assignment != null)
 			{
 				assignValue = true;
-				Logger.info("Assigning value ...");
 			}
 		}
 		for (Map.Entry<Settings, Object> m : settings.entrySet())
@@ -565,12 +560,9 @@ public class DSManager
 				{
 					for (Settings s : Settings.values())
 					{
-						Logger.info("Checking setting " + s.getName());
-
 						if (s.getName().equals(st.sval) && s.getName().equals(set.getName()))
 						{
 							assignment = s;
-							Logger.info("Setting found: " + st.sval);
 						}
 					}
 				} else
@@ -587,8 +579,6 @@ public class DSManager
 						value = st.sval;
 						break;
 					}
-					Logger.info("Value \"" + st.sval + "\" found for setting "
-							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
 					if (assignment != null)
 						return value;
 				}
@@ -599,7 +589,6 @@ public class DSManager
 			} else if ((char) st.ttype == '=' && assignment != null)
 			{
 				assignValue = true;
-				Logger.info("Assigning value ...");
 			}
 		}
 		throw new RuntimeException();
@@ -647,12 +636,9 @@ public class DSManager
 				{
 					for (Settings s : Settings.values())
 					{
-						Logger.info("Checking setting " + s.getName());
-
 						if (s.getName().equals(st.sval))
 						{
 							assignment = s;
-							Logger.info("Setting found: " + st.sval);
 						}
 					}
 				} else
@@ -669,8 +655,6 @@ public class DSManager
 						value = st.sval;
 						break;
 					}
-					Logger.info("Value \"" + st.sval + "\" found for setting "
-							+ (assignment != null ? assignment.getName() : "NO_SETTING_SET"));
 					if (assignment != null)
 						temp.put(assignment, value);
 				}
@@ -681,7 +665,6 @@ public class DSManager
 			} else if ((char) st.ttype == '=' && assignment != null)
 			{
 				assignValue = true;
-				Logger.info("Assigning value ...");
 			}
 		}
 		for (Map.Entry<Settings, Object> m : temp.entrySet())

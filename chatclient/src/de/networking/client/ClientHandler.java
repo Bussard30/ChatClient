@@ -377,14 +377,6 @@ public class ClientHandler
 								Logger.info("Received user");
 								if (((Response) o).getBuffer() instanceof ProfileInfoWrapper)
 								{
-									Logger.info("yo");
-									Logger.info(String.valueOf(((ProfileInfoWrapper) ((Response) o).getBuffer())
-											.getUser().getProfilepic()));
-									Logger.info(String.valueOf(
-											((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser().getUsername()));
-									Logger.info("status: " + String.valueOf(
-											((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser().getStatus()));
-									
 									if (((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
 											.getProfilepic() != null
 											&& ((ProfileInfoWrapper) ((Response) o).getBuffer()).getUser()
@@ -439,11 +431,11 @@ public class ClientHandler
 			{
 				Logger.info("advance");
 				advance();
-			} else if (!networkphaseprogress.get(phase)[2] && networkphaseprogress.get(phase)[0])
+			} else if (!networkphaseprogress.get(phase)[2] && !networkphaseprogress.get(phase)[3] && networkphaseprogress.get(phase)[0])
 			{
 				Logger.info("Sending protocol !");
 				send(new Request(Requests.TRSMT_PROTOCOL.getName(), Main.protocol));
-				networkphaseprogress.get(phase)[1] = true;
+				networkphaseprogress.get(phase)[3] = true;
 			}
 			break;
 		case PRE2:

@@ -6,23 +6,27 @@
 .username
 {
     -fx-background-color: #DDDDDD;
+	-fx-border-style: solid centered;
+	-fx-border: 0 0 0 0;
 }
 
 
 .password
 {
     -fx-background-color: #DDDDDD;
+	-fx-border-style: solid centered;
+	-fx-border: 0 0 0 0;
 }
 
 .loginbutton
 {
     -fx-background-color: #333333;
+	-fx-border: 0 0 0 0;
 }
 
 
 .loginbutton:hover
 {
-    -fx-background-color: #444444;
     -fx-cursor: hand;
 }
 
@@ -43,12 +47,10 @@
 
 .close_bg:hover
 {
-    -fx-background-color: #ff3333;
     -fx-cursor: hand;
 }
 
 .minimize_bg:hover
 {
-    -fx-background-color: #555555;
     -fx-cursor: hand;
 }

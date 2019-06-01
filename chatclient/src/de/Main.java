@@ -207,21 +207,33 @@ public class Main extends Application
 			throw new RuntimeException();
 		}
 	}
-
+	private Stage optionsStage;
 	public void openSettings()
 	{
-
-		Stage newWindow = new Stage();
-		newWindow.setScene(settingsScene);
+		if(optionsStage != null)
+		{
+			optionsStage.close();
+		}
+		optionsStage = new Stage();
+		optionsStage.setScene(settingsScene);
 		
-		newWindow.setTitle("Settings");
-		newWindow.initStyle(StageStyle.UNDECORATED);
+		optionsStage.setTitle("Settings");
+		optionsStage.initStyle(StageStyle.UNDECORATED);
 
-		newWindow.setX(primaryStage.getX() + 200);
-		newWindow.setY(primaryStage.getY() + 200);
+		optionsStage.setX(primaryStage.getX() + 200);
+		optionsStage.setY(primaryStage.getY() + 200);
 
-		newWindow.show();
+		optionsStage.show();
 
+	}
+	
+	public void closeSettings()
+	{
+		if(optionsStage != null)
+		{
+			optionsStage.close();
+			optionsStage = null;
+		}
 	}
 
 	public void addContact(Contact c)

@@ -58,12 +58,12 @@ limitations under the License.
       <CheckBox id="checkbox" fx:id="keeploggedin" layoutX="125.0" layoutY="248.0" mnemonicParsing="false" styleClass="checkbox" stylesheets="@login.css" text="Keep me logged in" textFill="#eeeded" />
       <Button id="loginbutton" layoutX="124.0" layoutY="271.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="149.0" styleClass="loginbutton" stylesheets="@login.css" text="Log in!" textFill="#eeeded" />
       <Pane onMouseDragged="#mouseDragged" onMousePressed="#mousePressed" prefHeight="20.0" prefWidth="340.0" />
-      <Pane id="minimize_bg" layoutX="340.0" onMouseClicked="#minimize" prefHeight="20.0" prefWidth="30.0" styleClass="minimize_bg" stylesheets="@login.css">
+      <Pane id="minimize_bg" layoutX="340.0" onMouseClicked="#minimize" onMouseEntered="#animate1" onMouseExited="#stopAnimation1" prefHeight="20.0" prefWidth="30.0" styleClass="minimize_bg" stylesheets="@login.css">
          <children>
             <Text id="minimize" fill="#eeeded" layoutX="17.0" layoutY="13.0" scaleX="2.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="minimize" text="_" wrappingWidth="12.257134914398193" />
          </children>
       </Pane>
-      <Pane id="close_bg" layoutX="370.0" onMouseClicked="#close" onMouseReleased="#close" prefHeight="20.0" prefWidth="30.0" styleClass="close_bg" stylesheets="@login.css">
+      <Pane id="close_bg" layoutX="370.0" onMouseClicked="#close" onMouseEntered="#animate0" onMouseExited="#stopAnimation0" onMouseReleased="#close" prefHeight="20.0" prefWidth="30.0" styleClass="close_bg" stylesheets="@login.css">
          <children>
             <FontAwesomeIconView id="close" fill="#eeeded" glyphName="CLOSE" layoutX="13.0" layoutY="15.0" scaleX="1.3" scaleY="1.3" wrappingWidth="20.000004768371582" />
          </children>
