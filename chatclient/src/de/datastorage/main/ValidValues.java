@@ -20,7 +20,7 @@ public enum ValidValues
 
 	START_ON_SYSTEN_STARTUP(Settings.START_ON_SYSTEN_STARTUP, false, new Object[]{}),
 
-	DEBUG(Settings.DEBUG, false, new Object[]{});
+	DEBUG(Settings.DEBUG, true, new Object[]{true, false});
 	
 	private final Settings s;
 	private final Object[] values;

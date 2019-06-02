@@ -87,6 +87,8 @@ public class ContactViewCell extends ListCell<Contact>
 
 	Color c0 = Color.rgb(51, 51, 51);
 	Color c1 = Color.rgb(85, 85, 85);
+	Color c2 = Color.color(0.50, 0.50, 0.50);
+	Color c3 = Color.color(0.85, 0.85, 0.85);
 
 	@FXML
 	public void mouseEntered(Event event)
@@ -143,22 +145,60 @@ public class ContactViewCell extends ListCell<Contact>
 		animation.play();
 	}
 	
+	private HashMap<FontAwesomeIconView, Animation> animations1 = new HashMap<>();
+	
+	private void animate(Color start, Color end, FontAwesomeIconView target)
+	{
+		Logger.info("animating...");
+		if (animations1.containsKey(target))
+		{
+			animations1.get(target).stop();
+			animations1.remove(target);
+		}
+
+		final Animation animation = new Transition()
+		{
+			{
+				setCycleDuration(Duration.millis(40));
+				setInterpolator(Interpolator.EASE_OUT);
+			}
+
+			@Override
+			protected void interpolate(double frac)
+			{
+				Color vColor = new Color((start.getRed() + ((end.getRed() - start.getRed()) * frac)),
+						(start.getGreen() + ((end.getGreen() - start.getGreen()) * frac)),
+						(start.getBlue() + ((end.getBlue() - start.getGreen()) * frac)),
+						(start.getOpacity() + ((end.getOpacity() - start.getOpacity()) * frac)));
+				target.setFill(vColor);
+			}
+		};
+		animation.setCycleCount(1);
+		animations1.put(target, animation);
+		animation.play();
+	}
+	
 	private void setB(Background b)
 	{
 		super.setBackground(b);
 	}
 
 	@FXML
-	public void mouseEntered1()
+	public void mouseEntered1(Event event)
 	{
-		close.setFill(Color.color(0.85, 0.85, 0.85));
+		animate(c2, c3, close);
 		hitboxclose.setCursor(Cursor.HAND);
 	}
 
 	@FXML
-	public void mouseExited1()
+	public void mouseExited1(Event event)
 	{
-		close.setFill(Color.color(0.50, 0.50, 0.50));
+		if (animations1.containsKey(close))
+		{
+			animations1.get(close).stop();
+			animations1.remove(close);
+			animate(c3, c2, close);
+		}
 		hitboxclose.setCursor(Cursor.DEFAULT);
 	}
 }
