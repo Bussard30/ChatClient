@@ -189,22 +189,32 @@ public class Main extends Application
 	 */
 	public void setScene(int choice)
 	{
-		switch (choice)
+		try
 		{
-		case 0:
-			primaryStage.setScene(loginScene);
-			break;
-		case 1:
-			primaryStage.setScene(forgotPasswordScene);
-			break;
-		case 2:
-			primaryStage.setScene(registrationScene);
-			break;
-		case 3:
-			primaryStage.setScene(chatClientScene);
-			break;
-		default:
-			throw new RuntimeException();
+			switch (choice)
+			{
+			case 0:
+				primaryStage.setScene(loginScene);
+				break;
+			case 1:
+				primaryStage.setScene(forgotPasswordScene);
+				break;
+			case 2:
+				primaryStage.setScene(registrationScene);
+				break;
+			case 3:
+				primaryStage.setScene(chatClientScene);
+				break;
+			default:
+				throw new RuntimeException();
+			}
+		}
+		catch(Exception e)
+		{
+			for(;;)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	private Stage optionsStage;

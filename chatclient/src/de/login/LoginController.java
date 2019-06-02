@@ -230,7 +230,7 @@ public class LoginController implements Initializable
 	@FXML
 	private void stopAnimation1(Event event)
 	{
-		if (animations.containsKey(event.getSource()) && animations.get(event.getSource()) != null)
+		if (animations.containsKey(event.getSource()))
 		{
 			animations.get(event.getSource()).stop();
 			animations.remove(event.getSource());

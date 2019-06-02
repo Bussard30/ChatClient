@@ -29,13 +29,8 @@
 .list-cell {
     -fx-background-color: #333333;
     -fx-padding: 0 0 0 0;
-
 }
 
-.list-cell:hover
-{
-
-}
 .list-view {
     -fx-background-color: #333333;
 }
