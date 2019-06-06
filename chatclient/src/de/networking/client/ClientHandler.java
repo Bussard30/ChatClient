@@ -910,6 +910,7 @@ public class ClientHandler
 					{
 						if (r.getType().getSuperclass().equals(Wrapper.class))
 						{
+							//this is 100% safe
 							return new Request(info[1],
 									Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
 						}

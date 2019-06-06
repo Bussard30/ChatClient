@@ -213,6 +213,12 @@ public class LoginController implements Initializable
 	{
 		animate(c0, c1, (Region) event.getSource());
 	}
+	
+	@FXML
+	private void animate2(Event event)
+	{
+		animate(c0,c1, (Region)event.getSource());
+	}
 
 	@FXML
 	private void stopAnimation0(Event event)
@@ -235,8 +241,21 @@ public class LoginController implements Initializable
 			animations.get(event.getSource()).stop();
 			animations.remove(event.getSource());
 			((Region) event.getSource())
-					.setBackground(new Background(new BackgroundFill(c0, CornerRadii.EMPTY, Insets.EMPTY)));
+					.setBackground(new Background(new BackgroundFill(c1, CornerRadii.EMPTY, Insets.EMPTY)));
 			animate(c1, c0, (Region) event.getSource());
+		}
+	}
+	
+	@FXML
+	private void stopAnimation2(Event event)
+	{
+		if(animations.containsKey(event.getSource()))
+		{
+			animations.get(event.getSource()).stop();
+			animations.remove(event.getSource());
+			((Region) event.getSource())
+			.setBackground(new Background(new BackgroundFill(c1, CornerRadii.EMPTY, Insets.EMPTY)));
+			animate(c1,c0,(Region)event.getSource());
 		}
 	}
 
