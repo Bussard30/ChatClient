@@ -201,6 +201,7 @@ public class LoginController implements Initializable
 	Color c0 = Color.rgb(34, 34, 34);
 	Color c1 = Color.rgb(85, 85, 85);
 	Color c2 = Color.rgb(255, 51, 51);
+	Color c3 = Color.rgb(51, 51, 51);
 
 	@FXML
 	private void animate0(Event event)
@@ -217,7 +218,7 @@ public class LoginController implements Initializable
 	@FXML
 	private void animate2(Event event)
 	{
-		animate(c0,c1, (Region)event.getSource());
+		animate(c3,c1, (Region)event.getSource());
 	}
 
 	@FXML
@@ -255,7 +256,7 @@ public class LoginController implements Initializable
 			animations.remove(event.getSource());
 			((Region) event.getSource())
 			.setBackground(new Background(new BackgroundFill(c1, CornerRadii.EMPTY, Insets.EMPTY)));
-			animate(c1,c0,(Region)event.getSource());
+			animate(c1,c3,(Region)event.getSource());
 		}
 	}
 
