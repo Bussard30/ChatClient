@@ -24,8 +24,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import networking.types.MessageWrapper;
 import networking.types.ProtocolWrapper;
 
 /**
@@ -38,6 +40,8 @@ public class Main extends Application
 	private static volatile Main main;
 
 	private Stage primaryStage;
+	private Stage optionsStage;
+	private Stage popupStage;
 
 	private FXMLLoader loginLoader;
 	private FXMLLoader forgotPasswordLoader;
@@ -50,12 +54,16 @@ public class Main extends Application
 	private Scene registrationScene;
 	private Scene chatClientScene;
 	private Scene settingsScene;
-	
+	private Scene popupScene;
+
 	private ChatclientController ccc;
 	private ForgotPasswordController fpc;
 	private RegisterController rc;
 	private LoginController lc;
 	private SettingsController sc;
+
+	// TODO PopupController
+	private Object pc;
 
 	private DSManager dsm;
 
@@ -181,6 +189,26 @@ public class Main extends Application
 
 	}
 
+	public void initMessagePopup() throws IOException
+	{
+		FXMLLoader popupLoader = new FXMLLoader(getClass().getResource("settings/settings.fxml"));
+		Parent root = popupLoader.load();
+
+		popupScene = new Scene(root);
+		popupScene.getStylesheets().add(Main.class.getResource("settings/settings.css").toExternalForm());
+		pc = popupLoader.getController();
+
+		popupStage.hide();
+		popupStage.setScene(popupScene);
+		popupStage.initModality(Modality.NONE);
+
+	}
+
+	public void popup(MessageWrapper m)
+	{
+		// TODO
+	}
+
 	/**
 	 * 
 	 * @param choice
@@ -208,25 +236,24 @@ public class Main extends Application
 			default:
 				throw new RuntimeException();
 			}
-		}
-		catch(Exception e)
+		} catch (Exception e)
 		{
-			for(;;)
+			for (;;)
 			{
 				e.printStackTrace();
 			}
 		}
 	}
-	private Stage optionsStage;
+
 	public void openSettings()
 	{
-		if(optionsStage != null)
+		if (optionsStage != null)
 		{
 			optionsStage.close();
 		}
 		optionsStage = new Stage();
 		optionsStage.setScene(settingsScene);
-		
+
 		optionsStage.setTitle("Settings");
 		optionsStage.initStyle(StageStyle.UNDECORATED);
 
@@ -236,10 +263,10 @@ public class Main extends Application
 		optionsStage.show();
 
 	}
-	
+
 	public void closeSettings()
 	{
-		if(optionsStage != null)
+		if (optionsStage != null)
 		{
 			optionsStage.close();
 			optionsStage = null;
@@ -250,7 +277,7 @@ public class Main extends Application
 	{
 
 	}
-	
+
 	public void setLocalUser(User u)
 	{
 		Logger.info(u.getStatus());
@@ -258,11 +285,12 @@ public class Main extends Application
 		ccc.setStatus(u.getStatus());
 		ccc.setUserName(u.getUsername());
 	}
-	
+
 	public void wrongPassword()
 	{
 		lc.wrongPassword();
 	}
+
 	/**
 	 * @param args
 	 *            the command line arguments
