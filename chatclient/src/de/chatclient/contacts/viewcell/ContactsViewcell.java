@@ -1,10 +1,11 @@
-package de.types;
+package de.chatclient.contacts.viewcell;
 
 import java.io.IOException;
 import java.util.HashMap;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.networking.logger.Logger;
+import de.types.Contact;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
@@ -26,9 +27,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class ContactViewCell extends ListCell<Contact>
+public class ContactsViewcell extends ListCell<Contact>
 {
-
 	@FXML
 	private ImageView image;
 

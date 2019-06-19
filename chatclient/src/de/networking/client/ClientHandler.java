@@ -896,7 +896,13 @@ public class ClientHandler
 		{
 			data[i - 2] = temp[i];
 		}
-
+		for(int i = 0; i < data.length; i++)
+		{
+			if(data[i] == "null")
+			{
+				data[i] = null;
+			}
+		}
 		if (info[0].equals("Req"))
 		{
 			for (Requests r : Requests.values())
