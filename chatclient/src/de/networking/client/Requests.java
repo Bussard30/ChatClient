@@ -6,8 +6,8 @@ import networking.types.AESKeyWrapper;
 import networking.types.CredentialsWrapper;
 import networking.types.MessageWrapper;
 import networking.types.ProtocolWrapper;
+import networking.types.SearchUserWrapper;
 import networking.types.TokenWrapper;
-import networking.types.UserVectorWrapper;
 
 public enum Requests
 {
@@ -30,7 +30,7 @@ public enum Requests
 
 	REQST_DATA("REQST_DATA", NetworkPhases.COM, Object.class),
 	
-	SEARCH_USER("SEARCH_USER", NetworkPhases.COM, UserVectorWrapper.class)
+	SEARCH_USER("SEARCH_USER", NetworkPhases.COM, SearchUserWrapper.class),
 
 	;
 

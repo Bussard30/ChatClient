@@ -189,6 +189,11 @@ public class Client
 	{
 		handler.transmitCreds(username, password, wantsToken);
 	}
+	
+	public void searchUsersFor(String s)
+	{
+		handler.searchUsersFor(s);
+	}
 
 	public void sendRequest(Request r) throws Exception
 	{

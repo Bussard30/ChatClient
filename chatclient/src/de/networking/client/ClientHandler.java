@@ -42,6 +42,7 @@ import networking.types.ProfileInfoWrapper;
 import networking.types.ProtocolWrapper;
 import networking.types.Request;
 import networking.types.Response;
+import networking.types.SearchUserWrapper;
 import networking.types.Wrapper;
 
 public class ClientHandler
@@ -152,6 +153,22 @@ public class ClientHandler
 		} else
 		{
 			Logger.info("Already sent user credentials!");
+		}
+	}
+	
+	public void searchUsersFor(String s)
+	{
+		if(phase == NetworkPhases.COM)
+		{
+			Logger.info("Getting users for current search content.");
+			try
+			{
+				send(new Request(Requests.SEARCH_USER.getName(), new SearchUserWrapper(s)));
+			} catch (Exception e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

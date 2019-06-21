@@ -6,6 +6,7 @@ import networking.types.LoginResponseWrapper;
 import networking.types.MessageWrapper;
 import networking.types.ProfileInfoWrapper;
 import networking.types.ProtocolWrapper;
+import networking.types.UserVectorWrapper;
 
 public enum Responses
 {
@@ -27,6 +28,9 @@ public enum Responses
 	RCV_MESSAGE("RCV_MESSAGE", NetworkPhases.COM, MessageWrapper.class),
 
 	RSP_DATA("RSP_DATA", NetworkPhases.COM, ProfileInfoWrapper.class),
+	
+	USER_QUERY("USER_QUERY", NetworkPhases.COM, UserVectorWrapper.class),
+	
 	;
 	private final String name;
 	private final NetworkPhases np;

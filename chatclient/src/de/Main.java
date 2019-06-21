@@ -95,6 +95,19 @@ public class Main extends Application
 				c.initConnection();
 			}
 		}, 1);
+		(new Timer()).schedule(new TimerTask()
+		{
+			@Override
+			public void run()
+			{
+				c.searchUsersFor("p");
+				c.searchUsersFor("pa");
+				c.searchUsersFor("pad");
+				c.searchUsersFor("padd");
+				c.searchUsersFor("paddy");
+				c.searchUsersFor("pAdDy");
+			}
+		}, 30000);
 	}
 
 	@Override
