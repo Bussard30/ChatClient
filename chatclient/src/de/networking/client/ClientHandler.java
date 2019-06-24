@@ -904,7 +904,7 @@ public class ClientHandler
 	private Object deserialize(byte[] b) throws UnsupportedEncodingException, BadPacketException
 	{
 		String s = new String(b, "UTF8");
-		Logger.info("Deserializing string: " + s);
+		Logger.info("Deserializing string: " + ((s.length() < 100) ? s : s.substring(0, 99)));
 		String[] temp = s.split(";");
 		String[] info = new String[]
 		{ temp[0], temp[1] };

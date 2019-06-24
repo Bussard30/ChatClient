@@ -13,6 +13,7 @@ import de.networking.logger.Logger;
 import networking.types.Request;
 import networking.types.Response;
 
+
 public class Client
 {
 	private static Client c;

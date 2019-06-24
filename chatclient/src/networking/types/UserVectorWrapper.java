@@ -22,7 +22,7 @@ public class UserVectorWrapper extends Wrapper
 	public UserVectorWrapper(String[] s)
 	{
 		users = new Vector<>();
-		for (int i = 0; i < s.length; i += 2)
+		for (int i = 0; i < s.length - 1; i += 2)
 		{
 			try
 			{
@@ -31,7 +31,7 @@ public class UserVectorWrapper extends Wrapper
 						s[i + 0],
 						null,
 						null,
-						s[i + 1] != null ? ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(s[4]))) : null,
+						s[i + 1] != null ? ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(s[i + 1]))) : null,
 						null,
 						null));
 			} catch (IOException e)
@@ -82,7 +82,14 @@ public class UserVectorWrapper extends Wrapper
 			strings.add((user.getUsername() != null) ? user.getUsername() : "null");
 			strings.add(user.getProfilepic() != null ? string : "null");
 		}
-		return (String[]) strings.toArray();
+		String[] temp = new String[strings.size()];
+		int i = 0;
+		for(String s : strings)
+		{
+			temp[i] = s;
+			i++;
+		}
+		return temp;
 	}
 	
 	public Vector<User> getUsers()
