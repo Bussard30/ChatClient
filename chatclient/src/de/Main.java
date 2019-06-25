@@ -141,6 +141,7 @@ public class Main extends Application
 		fpc = forgotPasswordLoader.getController();
 	}
 
+	
 	public void initRegistration() throws Exception
 	{
 		registrationLoader = new FXMLLoader(getClass().getResource("register/register.fxml"));
