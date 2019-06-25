@@ -71,6 +71,8 @@ public class ChatclientController implements Initializable
 	Circle online_status;
 
 	private ObservableList<Contact> contacts;
+	
+
 
 	public ChatclientController()
 	{

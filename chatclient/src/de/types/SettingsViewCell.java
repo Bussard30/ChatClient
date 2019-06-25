@@ -8,53 +8,37 @@ import de.networking.logger.Logger;
 import javafx.animation.Animation;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Cursor;
 import javafx.scene.control.ListCell;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-public class ContactViewCell extends ListCell<Contact>
+public class SettingsViewCell extends ListCell<String>
 {
-
 	@FXML
-	private ImageView image;
-
+	private AnchorPane pane;
+	
 	@FXML
-	private Text username;
-
-	@FXML
-	private Text status;
-
-	@FXML
-	private FontAwesomeIconView close;
-
-	@FXML
-	private AnchorPane anchorpane;
-
-	@FXML
-	private Pane hitboxclose;
+	private Text text;
 
 	private FXMLLoader mLLoader;
 	
-	@Override
-	protected void updateItem(Contact contact, boolean empty)
-	{
-		super.updateItem(contact, empty);
 
-		if (empty || contact == null)
+	@Override
+	protected void updateItem(String settingsName, boolean empty)
+	{
+		super.updateItem(settingsName, empty);
+
+		if (empty || settingsName == null)
 		{
 			setText(null);
 			setGraphic(null);
@@ -75,12 +59,9 @@ public class ContactViewCell extends ListCell<Contact>
 
 			}
 
-			image.setImage(SwingFXUtils.toFXImage(contact.getImage(), null));
-			username.setText(contact.getName());
-			super.setStyle("-fx-background-radius: 3;");
-			
 			setText(null);
-			setGraphic(anchorpane);
+			text.setText(settingsName);
+			setGraphic(pane);
 		}
 	}
 
@@ -89,27 +70,27 @@ public class ContactViewCell extends ListCell<Contact>
 	Color c2 = Color.color(0.50, 0.50, 0.50);
 	Color c3 = Color.color(0.85, 0.85, 0.85);
 
-	@FXML
-	public void mouseEntered(Event event)
-	{
-		super.setStyle("-fx-background-radius: 3;");
-		close.setVisible(true);
-		animate(c0, c1, anchorpane);
-	}
+//	@FXML
+//	public void mouseEntered(Event event)
+//	{
+//		super.setStyle("-fx-background-radius: 3;");
+//		close.setVisible(true);
+//		animate(c0, c1, anchorpane);
+//	}
 
-	@FXML
-	public void mouseExited(Event event)
-	{
-		super.setStyle("-fx-background-radius: 3;");
-		close.setVisible(false);
-		if (animations.containsKey(anchorpane))
-		{
-			animations.get(anchorpane).stop();
-			animations.remove(anchorpane);
-			setB(new Background(new BackgroundFill(c1, CornerRadii.EMPTY, Insets.EMPTY)));
-			animate(c1, c0, (Region) anchorpane);
-		}
-	}
+//	@FXML
+//	public void mouseExited(Event event)
+//	{
+//		super.setStyle("-fx-background-radius: 3;");
+//		close.setVisible(false);
+//		if (animations.containsKey(anchorpane))
+//		{
+//			animations.get(anchorpane).stop();
+//			animations.remove(anchorpane);
+//			setB(new Background(new BackgroundFill(c1, CornerRadii.EMPTY, Insets.EMPTY)));
+//			animate(c1, c0, (Region) anchorpane);
+//		}
+//	}
 
 	private HashMap<Region, Animation> animations = new HashMap<>();
 
@@ -143,9 +124,9 @@ public class ContactViewCell extends ListCell<Contact>
 		animations.put(target, animation);
 		animation.play();
 	}
-	
+
 	private HashMap<FontAwesomeIconView, Animation> animations1 = new HashMap<>();
-	
+
 	private void animate(Color start, Color end, FontAwesomeIconView target)
 	{
 		Logger.info("animating...");
@@ -176,28 +157,9 @@ public class ContactViewCell extends ListCell<Contact>
 		animations1.put(target, animation);
 		animation.play();
 	}
-	
+
 	private void setB(Background b)
 	{
 		super.setBackground(b);
-	}
-
-	@FXML
-	public void mouseEntered1(Event event)
-	{
-		animate(c2, c3, close);
-		hitboxclose.setCursor(Cursor.HAND);
-	}
-
-	@FXML
-	public void mouseExited1(Event event)
-	{
-		if (animations1.containsKey(close))
-		{
-			animations1.get(close).stop();
-			animations1.remove(close);
-			animate(c3, c2, close);
-		}
-		hitboxclose.setCursor(Cursor.DEFAULT);
 	}
 }

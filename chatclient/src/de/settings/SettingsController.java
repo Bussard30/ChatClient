@@ -18,7 +18,6 @@
  */
 package de.settings;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -27,8 +26,11 @@ import java.util.ResourceBundle;
 import de.Main;
 import de.datastorage.main.DSManager;
 import de.datastorage.main.Settings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -38,9 +40,19 @@ import javafx.scene.input.MouseEvent;
  */
 public class SettingsController implements Initializable
 {
+	@FXML
+	private ListView<String> leftOverview;
 
-//	@FXML
-//	private Text encryption;
+	private ObservableList<String> optionsList;
+
+	
+	public SettingsController()
+	{
+		optionsList = FXCollections.observableArrayList();
+		optionsList.addAll("My Account", "Privacy & Safety", "Voice & Video", "Notifications", "Hotkeys",
+				"Text & Images", "Appearance");
+	}
+	
 	/**
 	 * Initializes the controller class.
 	 */
@@ -48,8 +60,6 @@ public class SettingsController implements Initializable
 	public void initialize(URL url, ResourceBundle rb)
 	{
 		HashMap<Settings, Object> hm = null;
-		
-		
 		try
 		{
 			hm = DSManager.getInstance().getValuesOfCurrentOptions();
@@ -58,23 +68,16 @@ public class SettingsController implements Initializable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		Boolean b = (Boolean)hm.get(Settings.ENCRYPTION);
-//		if(b)
-//		{
-//			encryption.setText("Aktiv");
-//		}
-//		else
-//		{
-//			encryption.setText("Nicht Aktiv");
-//		}
+		leftOverview.setItems(optionsList);
+		
 	}
-	
+
 	@FXML
 	public void minimize(MouseEvent e)
 	{
-		
+
 	}
-	
+
 	@FXML
 	private void close(MouseEvent event)
 	{
