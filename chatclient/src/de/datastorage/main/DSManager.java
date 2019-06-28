@@ -388,7 +388,6 @@ public class DSManager
 	public void readOptions() throws IOException
 	{
 		BufferedReader br = new BufferedReader(new FileReader(options));
-
 		StreamTokenizer st = new StreamTokenizer(br);
 		st.commentChar('#');
 		st.eolIsSignificant(true);
