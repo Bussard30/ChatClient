@@ -10,6 +10,11 @@ import javax.imageio.ImageIO;
 
 import de.types.User;
 
+/**
+ * Used to hold an vector of users
+ * @author Bussard30
+ * @see SearchUserWrapper
+ */
 public class UserVectorWrapper extends Wrapper	
 {
 	private Vector<User> users;
@@ -19,6 +24,10 @@ public class UserVectorWrapper extends Wrapper
 		this.users = users;
 	}
 
+	/**
+	 * Creates UserVectorWrapper object with a string array obtained by {@link #getStrings()}
+	 * @param s
+	 */
 	public UserVectorWrapper(String[] s)
 	{
 		users = new Vector<>();
@@ -31,7 +40,7 @@ public class UserVectorWrapper extends Wrapper
 						s[i + 0],
 						null,
 						null,
-						s[i + 1] != null ? ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(s[i + 1]))) : null,
+						s[i + 1] != null ? ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(s[4]))) : null,
 						null,
 						null));
 			} catch (IOException e)
@@ -42,6 +51,9 @@ public class UserVectorWrapper extends Wrapper
 		}
 	}
 
+	/**
+	 * @return String array required for {@link #CredentialsWrapper(String[])}
+	 */
 	@Override
 	public String[] getStrings()
 	{

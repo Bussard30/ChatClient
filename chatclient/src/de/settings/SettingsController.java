@@ -68,7 +68,7 @@ public class SettingsController implements Initializable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		leftOverview.setItems(optionsList);
+//		leftOverview.setItems(optionsList);
 		
 	}
 
