@@ -37,6 +37,7 @@ public class ProfileInfoWrapper extends Wrapper
 	 */
 	public ProfileInfoWrapper(String[] s)
 	{
+		assert s.length == 7;
 		Logger.info(s[4]);
 			try
 			{

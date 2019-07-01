@@ -35,6 +35,7 @@ public class CredentialsWrapper extends Wrapper implements Serializable
 	 */
 	public CredentialsWrapper(String[] s)
 	{
+		assert s.length == 3;
 		username = s[0];
 		password = s[1];
 		token = s[2].equals("true") ? true : false;

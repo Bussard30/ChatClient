@@ -3,6 +3,7 @@ package de.networking.client;
 import java.security.PublicKey;
 
 import networking.types.AESKeyWrapper;
+import networking.types.AudioWrapper;
 import networking.types.CredentialsWrapper;
 import networking.types.MessageWrapper;
 import networking.types.ProtocolWrapper;
@@ -32,6 +33,7 @@ public enum Requests
 	
 	SEARCH_USER("SEARCH_USER", NetworkPhases.COM, SearchUserWrapper.class),
 
+	TRSMT_AUDIO("TRSMT_AUDIO", NetworkPhases.COM, AudioWrapper.class),
 	;
 
 	private final String name;

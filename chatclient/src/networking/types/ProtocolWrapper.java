@@ -21,6 +21,7 @@ public class ProtocolWrapper extends Wrapper implements Serializable
 	
 	public ProtocolWrapper(String[] s)
 	{
+		assert s.length == 2;
 		clientVersion = s[0];
 		protocolVersion = s[1];
 	}

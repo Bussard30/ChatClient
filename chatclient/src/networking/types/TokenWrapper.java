@@ -22,6 +22,7 @@ public class TokenWrapper extends Wrapper
 	 */
 	public TokenWrapper(String[] s)
 	{
+		assert s.length == 1;
 		token = s[0];
 	}
 

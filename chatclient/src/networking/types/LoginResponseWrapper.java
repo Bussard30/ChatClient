@@ -27,6 +27,7 @@ public class LoginResponseWrapper extends Wrapper
 	 */
 	public LoginResponseWrapper(String[] s)
 	{
+		assert s.length == 2;
 		loggedIn = s[0].equals("true") ? true : false;
 		token = s[1];
 	}
@@ -38,5 +39,14 @@ public class LoginResponseWrapper extends Wrapper
 	public String[] getStrings()
 	{
 		return new String[]{loggedIn ? "true" : "false", token};
+	}
+	
+	/**
+	 * Returns if login attempt was successful
+	 * @return
+	 */
+	public boolean isLoggedIn()
+	{
+		return loggedIn;
 	}
 }

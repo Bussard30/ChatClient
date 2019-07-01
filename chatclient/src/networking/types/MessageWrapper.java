@@ -56,6 +56,7 @@ public class MessageWrapper extends Wrapper implements Serializable
 	 */
 	public MessageWrapper(String[] s)
 	{
+		assert s.length == 5;
 		message = s[0];
 		source = s[1];
 		s[2] = destination;
