@@ -232,6 +232,7 @@ public class Main extends Application
 				primaryStage.setScene(registrationScene);
 				break;
 			case 3:
+				Logger.info("im doing something");
 				primaryStage.setScene(chatClientScene);
 				break;
 			default:
