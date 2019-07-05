@@ -155,10 +155,10 @@ public class ClientHandler
 			Logger.info("Already sent user credentials!");
 		}
 	}
-
+	
 	public void searchUsersFor(String s)
 	{
-		if (phase == NetworkPhases.COM)
+		if(phase == NetworkPhases.COM)
 		{
 			Logger.info("Getting users for current search content.");
 			try
@@ -448,8 +448,7 @@ public class ClientHandler
 			{
 				Logger.info("advance");
 				advance();
-			} else if (!networkphaseprogress.get(phase)[2] && !networkphaseprogress.get(phase)[3]
-					&& networkphaseprogress.get(phase)[0])
+			} else if (!networkphaseprogress.get(phase)[2] && !networkphaseprogress.get(phase)[3] && networkphaseprogress.get(phase)[0])
 			{
 				Logger.info("Sending protocol !");
 				send(new Request(Requests.TRSMT_PROTOCOL.getName(), Main.protocol));
@@ -463,10 +462,15 @@ public class ClientHandler
 			} else if (networkphaseprogress.get(phase)[1] == true)
 			{
 				Logger.info("Logged in, advancing.");
-
-				Platform.runLater(() -> {
-					Main.getInstance().setScene(3);
+				Platform.runLater(new Runnable()
+				{
+					@Override
+					public void run()
+					{
+						Main.getInstance().setScene(3);
+					}
 				});
+
 				advance();
 			}
 			break;
@@ -909,9 +913,9 @@ public class ClientHandler
 		{
 			data[i - 2] = temp[i];
 		}
-		for (int i = 0; i < data.length; i++)
+		for(int i = 0; i < data.length; i++)
 		{
-			if (data[i] == "null")
+			if(data[i] == "null")
 			{
 				data[i] = null;
 			}
@@ -929,7 +933,7 @@ public class ClientHandler
 					{
 						if (r.getType().getSuperclass().equals(Wrapper.class))
 						{
-							// this is 100% safe
+							//this is 100% safe
 							return new Request(info[1],
 									Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
 						}
