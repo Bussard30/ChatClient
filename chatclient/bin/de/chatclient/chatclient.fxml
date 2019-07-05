@@ -23,7 +23,7 @@
                   <Font size="18.0" />
                </font></Text>
             <Pane layoutX="60.0" layoutY="446.0" prefHeight="38.0" prefWidth="81.0" />
-            <Pane id="notifications" layoutX="6.0" layoutY="65.0" prefHeight="48.0" prefWidth="200.0" styleClass="notifications" stylesheets="@chatclient.css">
+            <Pane id="notifications" layoutX="6.0" layoutY="86.0" prefHeight="46.0" prefWidth="200.0" styleClass="notifications" stylesheets="@chatclient.css">
                <children>
                   <Pane layoutX="42.0" layoutY="6.0" prefHeight="37.0" prefWidth="117.0">
                      <children>
@@ -37,7 +37,7 @@
                   <FontAwesomeIconView fill="#eeeded" glyphName="COMMENT" layoutX="17.0" layoutY="27.0" scaleX="1.5" scaleY="1.5" />
                </children>
             </Pane>
-            <Pane id="contacts" layoutX="5.0" layoutY="113.0" prefHeight="48.0" prefWidth="200.0" styleClass="contacts" stylesheets="@chatclient.css">
+            <Pane id="contacts" layoutX="5.0" layoutY="132.0" prefHeight="46.0" prefWidth="200.0" styleClass="contacts" stylesheets="@chatclient.css">
                <children>
                   <FontAwesomeIconView fill="#eeeded" glyphName="USER" layoutX="17.0" layoutY="27.0" scaleX="1.5" scaleY="1.5" />
                   <Text fill="#eeeded" layoutX="47.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contacts">
@@ -47,7 +47,7 @@
                   </Text>
                </children>
             </Pane>
-            <Pane id="settings" fx:id="settings" layoutX="180.0" layoutY="5.0" prefHeight="24.0" prefWidth="24.0" styleClass="settings" stylesheets="@chatclient.css">
+            <Pane id="settings" fx:id="settings" layoutX="176.0" layoutY="8.0" prefHeight="24.0" prefWidth="24.0" styleClass="settings" stylesheets="@chatclient.css">
                <children>
                   <FontAwesomeIconView fill="#eeeded" glyphName="GEAR" layoutX="8.0" layoutY="16.0" onMouseReleased="#openSettings" scaleX="1.5" scaleY="1.5" />
                </children>

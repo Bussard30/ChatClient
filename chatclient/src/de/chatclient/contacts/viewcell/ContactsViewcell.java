@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.octicons.OctIconView;
 import de.networking.logger.Logger;
 import de.types.Contact;
 import javafx.animation.Animation;
@@ -15,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -39,7 +41,9 @@ public class ContactsViewcell extends ListCell<Contact>
 	private Text status;
 
 	@FXML
-	private FontAwesomeIconView close;
+	private OctIconView icon0;
+	@FXML
+	private OctIconView icon1;
 
 	@FXML
 	private AnchorPane anchorpane;
@@ -48,7 +52,7 @@ public class ContactsViewcell extends ListCell<Contact>
 	private Pane hitboxclose;
 
 	private FXMLLoader mLLoader;
-	
+
 	@Override
 	protected void updateItem(Contact contact, boolean empty)
 	{
@@ -63,9 +67,8 @@ public class ContactsViewcell extends ListCell<Contact>
 		{
 			if (mLLoader == null)
 			{
-				mLLoader = new FXMLLoader(getClass().getResource("/de/chatclient/contact/contact.fxml"));
+				mLLoader = new FXMLLoader(getClass().getResource("/de/chatclient/contacts/viewcell/contact.fxml"));
 				mLLoader.setController(this);
-
 				try
 				{
 					mLLoader.load();
@@ -73,13 +76,11 @@ public class ContactsViewcell extends ListCell<Contact>
 				{
 					e.printStackTrace();
 				}
-
 			}
-
 			image.setImage(SwingFXUtils.toFXImage(contact.getImage(), null));
 			username.setText(contact.getName());
 			super.setStyle("-fx-background-radius: 3;");
-			
+
 			setText(null);
 			setGraphic(anchorpane);
 		}
@@ -94,7 +95,8 @@ public class ContactsViewcell extends ListCell<Contact>
 	public void mouseEntered(Event event)
 	{
 		super.setStyle("-fx-background-radius: 3;");
-		close.setVisible(true);
+		icon0.setVisible(true);
+		icon1.setVisible(true);
 		animate(c0, c1, anchorpane);
 	}
 
@@ -102,7 +104,8 @@ public class ContactsViewcell extends ListCell<Contact>
 	public void mouseExited(Event event)
 	{
 		super.setStyle("-fx-background-radius: 3;");
-		close.setVisible(false);
+		icon0.setVisible(false);
+		icon1.setVisible(false);
 		if (animations.containsKey(anchorpane))
 		{
 			animations.get(anchorpane).stop();
@@ -111,10 +114,11 @@ public class ContactsViewcell extends ListCell<Contact>
 			animate(c1, c0, (Region) anchorpane);
 		}
 	}
+	
 
-	private HashMap<Region, Animation> animations = new HashMap<>();
+	private HashMap<Node, Animation> animations = new HashMap<>();
 
-	private void animate(Color start, Color end, Region target)
+	private void animate(Color start, Color end, Node target)
 	{
 		Logger.info("animating...");
 		if (animations.containsKey(target))
@@ -144,9 +148,14 @@ public class ContactsViewcell extends ListCell<Contact>
 		animations.put(target, animation);
 		animation.play();
 	}
-	
+
 	private HashMap<FontAwesomeIconView, Animation> animations1 = new HashMap<>();
-	
+
+	/**
+	 * @param start
+	 * @param end
+	 * @param target
+	 */
 	private void animate(Color start, Color end, FontAwesomeIconView target)
 	{
 		Logger.info("animating...");
@@ -177,7 +186,7 @@ public class ContactsViewcell extends ListCell<Contact>
 		animations1.put(target, animation);
 		animation.play();
 	}
-	
+
 	private void setB(Background b)
 	{
 		super.setBackground(b);
@@ -186,18 +195,24 @@ public class ContactsViewcell extends ListCell<Contact>
 	@FXML
 	public void mouseEntered1(Event event)
 	{
-		animate(c2, c3, close);
+		animate(c2, c3, icon0);
 		hitboxclose.setCursor(Cursor.HAND);
 	}
 
 	@FXML
 	public void mouseExited1(Event event)
 	{
-		if (animations1.containsKey(close))
+		if (animations1.containsKey(icon0))
 		{
-			animations1.get(close).stop();
-			animations1.remove(close);
-			animate(c3, c2, close);
+			animations1.get(icon0).stop();
+			animations1.remove(icon0);
+			animate(c3, c2, icon0);
+		}
+		if (animations1.containsKey(icon1))
+		{
+			animations1.get(icon1).stop();
+			animations1.remove(icon1);
+			animate(c3, c2, icon1);
 		}
 		hitboxclose.setCursor(Cursor.DEFAULT);
 	}

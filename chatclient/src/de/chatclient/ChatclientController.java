@@ -1,5 +1,5 @@
 /*
- * (C) Copyright 2018 Bussard30.
++ * (C) Copyright 2018 Bussard30.
  */
 package de.chatclient;
 

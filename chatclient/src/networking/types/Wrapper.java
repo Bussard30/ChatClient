@@ -33,7 +33,11 @@ public abstract class Wrapper
 			{
 				if(c.getParameters().length == 1)
 				{
+<<<<<<< Upstream, based on branch 'master' of https://github.com/Bussard30/ChatClient
 					if(c.getParameterTypes()[0].equals(String[].class) && c.getParameterTypes().length == 1)
+=======
+					if(c.getParameterTypes()[0].equals(String[].class))
+>>>>>>> f162391 Commit.
 					{
 						for(Parameter p : c.getParameters())
 						{

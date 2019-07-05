@@ -38,7 +38,7 @@ public class ContactsController implements Initializable {
     }
     
     @FXML
-    private void mouseDragged(MouseEvent event) 
+    private void mouseDragged(MouseEvent event)
     {
         Main.getInstance().getPrimaryStage().setX(event.getScreenX() + xOffset);
         Main.getInstance().getPrimaryStage().setY(event.getScreenY() + yOffset);
