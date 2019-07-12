@@ -2,52 +2,39 @@
  * (C) Copyright 2018 Bussard30.
  */
 
-package de.chatclient.chat;
+package de.chatclient.chat.toppane;
 
-import java.awt.TextField;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import de.chatclient.chat.viewcell.MessageViewCell;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.octicons.OctIconView;
-import de.networking.logger.Logger;
 import de.types.MessageContainer;
 import de.types.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
  *
  * @author Jonas S_
  */
-public class ChatController implements Initializable
+public class ChatTopPaneController implements Initializable
 {
 
 	@FXML
-	TextField chattextfield;
-
+	Circle image;
+	
 	@FXML
-	ListView<MessageContainer> chatview;
-
-	@FXML
-	Pane submit_bg;
-
-	@FXML
-	Pane voice_bg;
-
-	@FXML
-	OctIconView submit;
-
-	@FXML
-	FontAwesomeIconView voice;
+	Text username;
 
 	private User u;
 
@@ -61,12 +48,22 @@ public class ChatController implements Initializable
 	{
 		messages = FXCollections.observableArrayList();
 	}
-
-	public ChatController()
+	
+	public void setProfilePic(BufferedImage bi)
 	{
-		chatview.setItems(messages);
-		chatview.setCellFactory(contactviewcell -> new MessageViewCell());
-		chatview.setMaxHeight(messages.size() * 39 + 4);
+		image.setFill(new ImagePattern(SwingFXUtils.toFXImage(bi, null)));
+		image.setStyle("-fx-border-width: 0;");
+		image.setStroke(Color.TRANSPARENT);
+	}
+	
+	public void setUsername(String username)
+	{
+		this.username.setText(username);
+	}
+
+	public ChatTopPaneController()
+	{
+		
 	}
 
 	private double xOffset;

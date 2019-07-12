@@ -41,19 +41,8 @@
     -fx-border-radius: 3.0;
 }
 
-.notifications:hover
-{
-    -fx-background-color: #444444;
-}
-
-.contacts:hover
-{
-    -fx-background-color: #444444;
-}
-
 .settings:hover
 {
-    -fx-background-color: #444444;
     -fx-cursor: hand;
 }
 

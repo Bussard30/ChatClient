@@ -23,9 +23,8 @@ limitations under the License.
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.Pane?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.contacts.ContactsController">
    <children>
-      <ListView prefHeight="200.0" prefWidth="600.0" />
+      <ListView fx:id="contactview" prefHeight="400.0" prefWidth="600.0" />
    </children>
 </Pane>

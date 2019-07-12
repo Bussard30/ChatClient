@@ -60,7 +60,6 @@ public class ContactsViewcell extends ListCell<Contact>
 
 		if (empty || contact == null)
 		{
-
 			setText(null);
 			setGraphic(null);
 		} else
@@ -149,14 +148,14 @@ public class ContactsViewcell extends ListCell<Contact>
 		animation.play();
 	}
 
-	private HashMap<FontAwesomeIconView, Animation> animations1 = new HashMap<>();
+	private HashMap<OctIconView, Animation> animations1 = new HashMap<>();
 
 	/**
 	 * @param start
 	 * @param end
 	 * @param target
 	 */
-	private void animate(Color start, Color end, FontAwesomeIconView target)
+	private void animate(Color start, Color end, OctIconView target)
 	{
 		Logger.info("animating...");
 		if (animations1.containsKey(target))

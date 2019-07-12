@@ -2,7 +2,7 @@
  * (C) Copyright 2018 Bussard30.
  */
 
-package de.chatclient.contacts;
+package de.chatclient.contacts.toppane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,7 +21,7 @@ import javafx.scene.layout.Pane;
  *
  * @author Bussard30
  */
-public class ContactsController implements Initializable
+public class ContactsTopPaneController implements Initializable
 {
 	private ObservableList<Contact> contacts;
 	
@@ -37,7 +37,7 @@ public class ContactsController implements Initializable
 		contacts = FXCollections.observableArrayList();
 	}
 
-	public ContactsController()
+	public ContactsTopPaneController()
 	{
 		contactview.setItems(contacts);
 		contactview.setCellFactory(contactviewcell -> new ContactsViewcell());

@@ -1,5 +1,6 @@
 package de.types;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -15,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.ListCell;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -23,6 +23,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -30,7 +32,7 @@ public class ContactViewCell extends ListCell<Contact>
 {
 
 	@FXML
-	private ImageView image;
+	private Circle image;
 
 	@FXML
 	private Text username;
@@ -75,7 +77,7 @@ public class ContactViewCell extends ListCell<Contact>
 
 			}
 
-			image.setImage(SwingFXUtils.toFXImage(contact.getImage(), null));
+			setProfilePic(contact.getImage());
 			username.setText(contact.getName());
 			super.setStyle("-fx-background-radius: 3;");
 			
@@ -84,6 +86,13 @@ public class ContactViewCell extends ListCell<Contact>
 		}
 	}
 
+	public void setProfilePic(BufferedImage bi)
+	{
+		image.setFill(new ImagePattern(SwingFXUtils.toFXImage(bi, null)));
+		image.setStyle("-fx-border-width: 0;");
+		image.setStroke(Color.TRANSPARENT);
+	}
+	
 	Color c0 = Color.rgb(51, 51, 51);
 	Color c1 = Color.rgb(85, 85, 85);
 	Color c2 = Color.color(0.50, 0.50, 0.50);

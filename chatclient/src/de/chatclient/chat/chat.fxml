@@ -20,11 +20,25 @@ limitations under the License.
 
 -->
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import de.jensd.fx.glyphs.octicons.OctIconView?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@chat.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@chat.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.chat.ChatController">
    <children>
-      <ListView id="chatpane" prefHeight="200.0" prefWidth="600.0" styleClass="chatpane" stylesheets="@chat.css" />
+      <ListView id="chatpane" fx:id="chatview" prefHeight="365.0" prefWidth="600.0" styleClass="chatpane" stylesheets="@chat.css" />
+      <TextField fx:id="chattextfield" layoutX="6.0" layoutY="370.0" onKeyPressed="#commitKey" prefHeight="25.0" prefWidth="544.0" promptText="Type something..." />
+      <Pane fx:id="submit_bg" layoutX="551.0" layoutY="368.0" prefHeight="25.0" prefWidth="24.0">
+         <children>
+            <OctIconView fx:id="submit" fill="#eeeded" glyphName="ARROW_RIGHT" layoutX="6.0" layoutY="19.0" size="20" />
+         </children>
+      </Pane>
+      <Pane fx:id="voice_bg" layoutX="575.0" layoutY="368.0" prefHeight="25.0" prefWidth="24.0">
+         <children>
+            <FontAwesomeIconView fx:id="voice" fill="#eeeded" glyphName="MICROPHONE" layoutX="5.0" layoutY="21.0" size="18" />
+         </children>
+      </Pane>
    </children>
 </Pane>
