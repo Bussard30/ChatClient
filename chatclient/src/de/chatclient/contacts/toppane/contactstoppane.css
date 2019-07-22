@@ -1,0 +1,10 @@
+.root
+{
+	-fx-background-color: transparent;
+}
+
+.addfriendpane
+{
+	-fx-background-color: #43b581;
+	-fx-background-radius: 3;
+}

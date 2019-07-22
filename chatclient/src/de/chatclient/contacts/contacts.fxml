@@ -22,9 +22,12 @@ limitations under the License.
 
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.contacts.ContactsController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="690.0" stylesheets="@contacts.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.contacts.ContactsController">
    <children>
-      <ListView fx:id="contactview" prefHeight="400.0" prefWidth="600.0" />
+      <ListView fx:id="contactview" layoutY="30.0" prefHeight="370.0" prefWidth="690.0" />
+      <Text fill="#eeeded" layoutX="19.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+      <Text fill="#eeeded" layoutX="200.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status" />
    </children>
 </Pane>

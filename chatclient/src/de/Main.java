@@ -285,7 +285,11 @@ public class Main extends Application
 		ccc.setProfilePic(u.getProfilepic());
 		ccc.setStatus(u.getStatus());
 		ccc.setUserName(u.getUsername());
-		ccc.addContact(new Contact(u.getProfilepic(), u.getUsername(), u.getStatus()));
+	}
+	
+	public void showChat(Contact c)
+	{
+		ccc.showChat(c);
 	}
 
 	public void wrongPassword()

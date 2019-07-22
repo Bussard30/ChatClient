@@ -6,10 +6,15 @@ import de.types.MessageContainer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class MessageViewCell extends ListCell<MessageContainer>
 {
+	
+	@FXML
+	Pane pane;
+	
 	@FXML
 	Text user;
 	
@@ -31,7 +36,7 @@ public class MessageViewCell extends ListCell<MessageContainer>
 		{
 			if (mLLoader == null)
 			{
-				mLLoader = new FXMLLoader(getClass().getResource("/de/chatclient/contact/contact.fxml"));
+				mLLoader = new FXMLLoader(getClass().getResource("/de/chatclient/chat/viewcell/messageviewcell.fxml"));
 				mLLoader.setController(this);
 
 				try
@@ -45,8 +50,12 @@ public class MessageViewCell extends ListCell<MessageContainer>
 			}
 			super.setStyle("-fx-background-radius: 3;");
 			
+			message.setText(mc.getMessage().getMessage());
+			user.setText(mc.getUser().getUsername());
+			
+			message.setX(user.getLayoutBounds().getWidth());
 			setText(null);
-			setGraphic(/* pane von der fxml */null);
+			setGraphic(pane);
 		}
 	}
 

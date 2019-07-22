@@ -34,14 +34,15 @@ public class ContactsController implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-		contacts = FXCollections.observableArrayList();
+		contactview.setItems(contacts);
+		contactview.setCellFactory(contactviewcell -> new ContactsViewcell());
+		contactview.setMaxHeight(contacts.size() * 50 + 4);
 	}
 
 	public ContactsController()
 	{
-		contactview.setItems(contacts);
-		contactview.setCellFactory(contactviewcell -> new ContactsViewcell());
-		contactview.setMaxHeight(contacts.size() * 48 + 4);
+		contacts = FXCollections.observableArrayList();
+
 	}
 	
 	public Pane getPane()
@@ -52,5 +53,6 @@ public class ContactsController implements Initializable
 	public void addContact(Contact c)
 	{
 		contacts.add(c);
+		contactview.setMaxHeight(contacts.size() * 48 + 4);
 	}
 }

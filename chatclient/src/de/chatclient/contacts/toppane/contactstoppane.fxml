@@ -20,11 +20,26 @@ limitations under the License.
 
 -->
 
-<?import javafx.scene.control.ListView?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.contacts.ContactsTopPaneController">
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="690.0" stylesheets="@contactstoppane.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.contacts.toppane.ContactsTopPaneController">
    <children>
-      <ListView fx:id="contactview" prefHeight="400.0" prefWidth="600.0" />
+      <Text fill="#eeeded" layoutX="60.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Friends">
+         <font>
+            <Font size="15.0" />
+         </font></Text>
+      <FontAwesomeIconView fill="#eeeded" glyphName="GROUP" layoutX="30.0" layoutY="32.0" size="20" />
+      <Pane id="addfriendpane" layoutX="530.0" layoutY="15.0" prefHeight="20.0" prefWidth="100.0" styleClass="addfriendpane" stylesheets="@contactstoppane.css">
+         <children>
+            <Text fill="WHITE" layoutX="10.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Friend">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </Pane>

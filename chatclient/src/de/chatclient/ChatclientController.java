@@ -4,14 +4,18 @@
 package de.chatclient;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import de.Main;
 import de.chatclient.chat.ChatController;
 import de.chatclient.chat.toppane.ChatTopPaneController;
 import de.chatclient.contacts.ContactsController;
+import de.chatclient.contacts.toppane.ContactsTopPaneController;
 import de.networking.logger.Logger;
 import de.types.Contact;
 import de.types.ContactViewCell;
@@ -23,10 +27,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -84,13 +90,14 @@ public class ChatclientController implements Initializable
 	ChatTopPaneController ctpc;
 
 	ContactsController cc;
+	ContactsTopPaneController ctc;
 
 	// TODO Notifications controller
-	
+
 	/**
-	 * Current describes what pane is being shown.
-	 * current == 0 -> Nothing
-	 * current == 1 -> Contacts
+	 * Current describes what pane is being shown.<br>
+	 * current == 0 -> Nothing<br>
+	 * current == 1 -> Contacts<br>
 	 * current == 2 -> Chat
 	 */
 	int current = 0;
@@ -100,36 +107,62 @@ public class ChatclientController implements Initializable
 	public ChatclientController()
 	{
 		contacts = FXCollections.observableArrayList();
-		// try
-		// {
-		// contacts.addAll(new
-		// Contact(ImageIO.read(Main.class.getResource("image.png")), "user0",
-		// "ayyyyyyyy"),
-		// new Contact(ImageIO.read(Main.class.getResource("image.png")),
-		// "user1", "status"),
-		// new Contact(ImageIO.read(Main.class.getResource("image.png")),
-		// "user2", "status"),
-		// new Contact(ImageIO.read(Main.class.getResource("image.png")),
-		// "user3", "status"),
-		// new Contact(ImageIO.read(Main.class.getResource("image.png")),
-		// "user4", "status"));
-		// } catch (IOException e)
-		// {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		try
+		{
+			contacts.addAll(new Contact(ImageIO.read(Main.class.getResource("imagecc.jpg")), "CCUser37", "Hallo."));
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		/**
 		 * Adding panes for mid/top pane
 		 */
 		FXMLLoader fml0 = new FXMLLoader(getClass().getResource("/de/chatclient/chat/chat.fxml"));
+		try
+		{
+			fml0.load();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		chc = fml0.getController();
 
 		FXMLLoader fml1 = new FXMLLoader(getClass().getResource("/de/chatclient/chat/toppane/chattoppane.fxml"));
+		try
+		{
+			fml1.load();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ctpc = fml1.getController();
 
 		FXMLLoader fml2 = new FXMLLoader(getClass().getResource("/de/chatclient/contacts/contacts.fxml"));
+		try
+		{
+			fml2.load();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		cc = fml2.getController();
+
+		FXMLLoader fml3 = new FXMLLoader(
+				getClass().getResource("/de/chatclient/contacts/toppane/contactstoppane.fxml"));
+		try
+		{
+			fml3.load();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ctc = fml3.getController();
 	}
 
 	@Override
@@ -141,6 +174,16 @@ public class ChatclientController implements Initializable
 		Logger.info(String.valueOf(contacts.size() * 46 + 4));
 		Logger.info(String.valueOf(recentcontacts.getFixedCellSize()));
 		anchorpane.setMaxSize(900, 600);
+
+		recentcontacts.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+			@Override
+			public void handle(MouseEvent event)
+			{
+				System.out.println("clicked on " + recentcontacts.getSelectionModel().getSelectedItem());
+				showChat(recentcontacts.getSelectionModel().getSelectedItem());
+			}
+		});
 	}
 
 	private double xOffset;
@@ -262,6 +305,8 @@ public class ChatclientController implements Initializable
 		Main.getInstance().openSettings();
 	}
 
+	private Contact temp;
+
 	public void loadContacts(ObservableList<Contact> contacts)
 	{
 		recentcontacts.setItems(contacts);
@@ -271,6 +316,7 @@ public class ChatclientController implements Initializable
 
 	public void addContact(Contact contact)
 	{
+		temp = contact;
 		contacts.add(contact);
 		recentcontacts.setMaxHeight(contacts.size() * 46 + 4);
 	}
@@ -315,12 +361,62 @@ public class ChatclientController implements Initializable
 			animate(c6, c5, (Region) event.getSource());
 		}
 	}
-	
+
 	@FXML
 	public void openContacts()
 	{
+		Logger.info("Doing something");
 		current = 1;
+		/**
+		 * Removing old toppane and adding our new one :)
+		 */
+		ObservableList<Node> o = anchorpane.getChildren();
+		o.remove(topPane);
+		o.add(ctc.getPane());
+		ctc.getPane().setLayoutX(topPane.getLayoutX());
+		ctc.getPane().setLayoutY(topPane.getLayoutY());
+
+		o.remove(midPane);
+		o.add(cc.getPane());
+		cc.getPane().setLayoutX(midPane.getLayoutX());
+		cc.getPane().setLayoutY(midPane.getLayoutY());
+
+		try
+		{
+			cc.addContact(new Contact(ImageIO.read(Main.class.getResource("imagecc.jpg")), "CCUser37", "Hallo."));
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		topPane.setVisible(true);
+	}
+
+	public void showChat(Contact c)
+	{
+		Logger.info("Doing something");
+		current = 2;
+		/**
+		 * Removing old toppane and adding our new one :)
+		 */
+		ObservableList<Node> o = anchorpane.getChildren();
+		chc.getPane().setLayoutX(midPane.getLayoutX());
+		chc.getPane().setLayoutY(midPane.getLayoutY());
+		chc.getPane().setPrefWidth(midPane.getPrefWidth());
+		chc.getPane().setPrefHeight(midPane.getPrefHeight());
+		o.remove(midPane);
+		o.add(chc.getPane());
+
+		ctpc.getPane().setLayoutX(topPane.getLayoutX());
+		ctpc.getPane().setLayoutY(topPane.getLayoutY());
+		ctpc.getPane().setPrefWidth(topPane.getPrefWidth());
+		ctpc.getPane().setPrefHeight(topPane.getPrefHeight());
+		o.remove(topPane);
+		o.add(ctpc.getPane());
 		
+		ctpc.setProfilePic(c.getImage());
+		ctpc.setUsername(c.getName());
+
 	}
 
 }

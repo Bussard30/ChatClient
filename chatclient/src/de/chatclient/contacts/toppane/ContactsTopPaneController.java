@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import de.chatclient.contacts.viewcell.ContactsViewcell;
+import de.networking.logger.Logger;
 import de.types.Contact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,21 +28,15 @@ public class ContactsTopPaneController implements Initializable
 	
 	@FXML
 	Pane pane;
-	
-	@FXML
-	ListView<Contact> contactview;
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-		contacts = FXCollections.observableArrayList();
+
 	}
 
 	public ContactsTopPaneController()
 	{
-		contactview.setItems(contacts);
-		contactview.setCellFactory(contactviewcell -> new ContactsViewcell());
-		contactview.setMaxHeight(contacts.size() * 48 + 4);
 	}
 	
 	public Pane getPane()

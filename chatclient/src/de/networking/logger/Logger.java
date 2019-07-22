@@ -18,14 +18,14 @@ public class Logger
 		sdf = new SimpleDateFormat("HH:mm:ss.SSS");
 	}
 	
-	public static void info(String info)
+	public static void info(String s)
 	{
-		print("INFO", info);
+		print("INFO", ((s.length() > 100) ? s.substring(0, 99) : s));
 	}
 
-	public static void info(String source, String info)
+	public static void info(String source, String s)
 	{
-		print("INFO", source, info);
+		print("INFO", source, ((s.length() > 100) ? s.substring(0, 99) : s));
 	}
 
 	protected static String getTime()
@@ -48,25 +48,25 @@ public class Logger
 	{
 		try
 		{
-			DSManager.getInstance().appendLine("[" + getTime() + "]" + "[" + prefix + "]" + s + "\n");
+			DSManager.getInstance().appendLine("[" + getTime() + "]" + "[" + prefix + "]" + ((s.length() > 100) ? s.substring(0, 99) : s) + "\n");
 		} catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("[" + getTime() + "]" + "[" + prefix + "]" + s);
+		System.out.println("[" + getTime() + "]" + "[" + prefix + "]" + ((s.length() > 100) ? s.substring(0, 99) : s));
 	}
 
 	private static void print(String prefix, String source, String s)
 	{
 		try
 		{
-			DSManager.getInstance().appendLine("[" + getTime() + "]" + "[" + prefix + "]" + "[" + source + "]" + s+ "\n");
+			DSManager.getInstance().appendLine("[" + getTime() + "]" + "[" + prefix + "]" + "[" + source + "]" + ((s.length() > 100) ? s.substring(0, 99) : s)+ "\n");
 		} catch (FileNotFoundException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("[" + getTime() + "]" + "[" + prefix + "]" + "[" + source + "]" + s);
+		System.out.println("[" + getTime() + "]" + "[" + prefix + "]" + "[" + source + "]" + ((s.length() > 100) ? s.substring(0, 99) : s));
 	}
 }

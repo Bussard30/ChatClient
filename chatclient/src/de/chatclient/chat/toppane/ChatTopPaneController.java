@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -30,6 +31,9 @@ import javafx.scene.text.Text;
 public class ChatTopPaneController implements Initializable
 {
 
+	@FXML
+	Pane mainPane;
+	
 	@FXML
 	Circle image;
 	
@@ -94,6 +98,11 @@ public class ChatTopPaneController implements Initializable
 		{
 			// NOTHING
 		}
+	}
+	
+	public Pane getPane()
+	{
+		return mainPane;
 	}
 
 }

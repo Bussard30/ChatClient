@@ -1,31 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-
-(C) Copyright 2018 Bussard30.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
-
--->
+<!-- (C) Copyright 2018 Bussard30. Licensed under the Apache License, Version 
+	2.0 (the "License"); you may not use this file except in compliance with 
+	the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+	Unless required by applicable law or agreed to in writing, software distributed 
+	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
+	the specific language governing permissions and limitations under the License. -->
 
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="690.0" stylesheets="@messageviewcell.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.chatclient.chat.ChatController">
-   <children>
-      <Text fx:id="user" fill="#eeeded" layoutX="14.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" />
-      <Text fx:id="message" fill="#eeeded" layoutX="70.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" />
-   </children>
+<Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="500.0" stylesheets="@messageviewcell.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<Text fx:id="user" fill="#eeeded" layoutX="14.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Text>
+		<Text fx:id="message" fill="#eeeded" layoutX="61.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" />
+	</children>
 </Pane>

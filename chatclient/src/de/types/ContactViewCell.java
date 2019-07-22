@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 
+import de.Main;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.networking.logger.Logger;
 import javafx.animation.Animation;
@@ -50,7 +51,9 @@ public class ContactViewCell extends ListCell<Contact>
 	private Pane hitboxclose;
 
 	private FXMLLoader mLLoader;
-	
+
+	private Contact c;
+
 	@Override
 	protected void updateItem(Contact contact, boolean empty)
 	{
@@ -79,10 +82,12 @@ public class ContactViewCell extends ListCell<Contact>
 
 			setProfilePic(contact.getImage());
 			username.setText(contact.getName());
+			status.setText(contact.getStatus());
 			super.setStyle("-fx-background-radius: 3;");
-			
+
 			setText(null);
 			setGraphic(anchorpane);
+			c = contact;
 		}
 	}
 
@@ -92,7 +97,7 @@ public class ContactViewCell extends ListCell<Contact>
 		image.setStyle("-fx-border-width: 0;");
 		image.setStroke(Color.TRANSPARENT);
 	}
-	
+
 	Color c0 = Color.rgb(51, 51, 51);
 	Color c1 = Color.rgb(85, 85, 85);
 	Color c2 = Color.color(0.50, 0.50, 0.50);
@@ -152,9 +157,9 @@ public class ContactViewCell extends ListCell<Contact>
 		animations.put(target, animation);
 		animation.play();
 	}
-	
+
 	private HashMap<FontAwesomeIconView, Animation> animations1 = new HashMap<>();
-	
+
 	private void animate(Color start, Color end, FontAwesomeIconView target)
 	{
 		Logger.info("animating...");
@@ -185,7 +190,7 @@ public class ContactViewCell extends ListCell<Contact>
 		animations1.put(target, animation);
 		animation.play();
 	}
-	
+
 	private void setB(Background b)
 	{
 		super.setBackground(b);
@@ -208,5 +213,12 @@ public class ContactViewCell extends ListCell<Contact>
 			animate(c3, c2, close);
 		}
 		hitboxclose.setCursor(Cursor.DEFAULT);
+	}
+
+	@FXML
+	public void mouseReleased(Event event)
+	{
+		Logger.info("Doing somsdgjnsadkjögnjksdng");
+		Main.getInstance().showChat(c);
 	}
 }

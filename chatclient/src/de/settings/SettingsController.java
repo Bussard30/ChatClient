@@ -26,12 +26,17 @@ import java.util.ResourceBundle;
 import de.Main;
 import de.datastorage.main.DSManager;
 import de.datastorage.main.Settings;
+import de.settings.Settingsdetail.Settingsdetail;
+import de.settings.settingsaccount.AccountController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 
 /**
  * FXML Controller class
@@ -43,16 +48,28 @@ public class SettingsController implements Initializable
 	@FXML
 	private ListView<String> leftOverview;
 
+	@FXML
+	private SplitPane splitPane;
+	
+	@FXML
+	private Pane rightPane;
+	
 	private ObservableList<String> optionsList;
 
-	
+	private AccountController ac;
+
+	private Settingsdetail language, encryption;
+
 	public SettingsController()
 	{
+		// Language = new Settingsdetail(,);
+		// Encrytion = new Settingsdetail(,);
+
 		optionsList = FXCollections.observableArrayList();
 		optionsList.addAll("My Account", "Privacy & Safety", "Voice & Video", "Notifications", "Hotkeys",
 				"Text & Images", "Appearance");
 	}
-	
+
 	/**
 	 * Initializes the controller class.
 	 */
@@ -68,8 +85,28 @@ public class SettingsController implements Initializable
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		leftOverview.setItems(optionsList);
-		
+		leftOverview.setCellFactory(viewcell -> new SettingsViewCell());
+		leftOverview.setItems(optionsList);
+		FXMLLoader fml0 = new FXMLLoader(getClass().getResource("/de/settings/settingsaccount/account.fxml"));
+		try
+		{
+			fml0.load();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ac = fml0.getController();
+		openMyAccount(null);
+	}
+
+	@FXML
+	public void openMyAccount(MouseEvent x)
+	{
+		splitPane.getItems().remove(rightPane);
+		ac.getPane().setPrefHeight(380);
+		splitPane.getItems().add(ac.getPane());
+
 	}
 
 	@FXML

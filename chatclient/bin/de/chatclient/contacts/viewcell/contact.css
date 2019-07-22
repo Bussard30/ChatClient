@@ -1,7 +1,7 @@
-.contactpane
+.root
 {
 	-fx-background-radius: 3.0;
-	-fx-background: #333333;
+	-fx-background: transparent;
 }
 
 /* .contactpane:hover

@@ -1,6 +1,8 @@
 .root
 {
-    -fx-background-color: #444444;
+    -fx-background-color: #3a3a3a;
+    -fx-border-color : #222222;
+    -fx-border-width: 2;
 }
 .list-cell {
     -fx-background-color: transparent;

@@ -4,14 +4,12 @@
 
 package de.chatclient.chat;
 
-import java.awt.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import de.chatclient.chat.viewcell.MessageViewCell;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.octicons.OctIconView;
-import de.networking.logger.Logger;
 import de.types.MessageContainer;
 import de.types.User;
 import javafx.collections.FXCollections;
@@ -19,9 +17,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import networking.types.MessageWrapper;
 
 /**
  * FXML Controller class
@@ -30,6 +30,8 @@ import javafx.scene.layout.Pane;
  */
 public class ChatController implements Initializable
 {
+	@FXML
+	Pane mainPane;
 
 	@FXML
 	TextField chattextfield;
@@ -52,6 +54,7 @@ public class ChatController implements Initializable
 	private User u;
 
 	private ObservableList<MessageContainer> messages;
+	
 
 	/**
 	 * Initializes the controller class.
@@ -59,29 +62,46 @@ public class ChatController implements Initializable
 	@Override
 	public void initialize(URL url, ResourceBundle rb)
 	{
-		messages = FXCollections.observableArrayList();
+		chatview.setItems(messages);
+		chatview.setCellFactory(contactviewcell -> new MessageViewCell());
+		chatview.setMaxHeight(messages.size() * 39 + 4);
+		
+		messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
+				new MessageWrapper("Hallo", null, null, false, false, 0)));
+		messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
+				new MessageWrapper("Das hier ist ein Test", null, null, false, false, 0)));
+		messages.add(new MessageContainer(new User(null, "CCUser37", null, null, null, null, null),
+				new MessageWrapper("Ok super", null, null, false, false, 0)));
+		messages.add(new MessageContainer(new User(null, "CCUser37", null, null, null, null, null),
+				new MessageWrapper("test123", null, null, false, false, 0)));
+		messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
+				new MessageWrapper("ok funktioniert", null, null, false, false, 0)));
+		chatview.setLayoutY(chatview.getLayoutY() - 27);
+		chatview.setLayoutY(chatview.getLayoutY() - 27);
+		chatview.setLayoutY(chatview.getLayoutY() - 27);
+		chatview.setLayoutY(chatview.getLayoutY() - 27);
+		chatview.setLayoutY(chatview.getLayoutY() - 27);
+		
+		chatview.setPrefHeight(messages.size() * 33 + 6);
+		chatview.setMaxHeight(messages.size() * 33 + 6);
+		chatview.setMinHeight(messages.size() * 33 + 6);
+		
 	}
 
 	public ChatController()
 	{
-		chatview.setItems(messages);
-		chatview.setCellFactory(contactviewcell -> new MessageViewCell());
-		chatview.setMaxHeight(messages.size() * 39 + 4);
+		messages = FXCollections.observableArrayList();
+
 	}
 
 	private double xOffset;
 	private double yOffset;
 
-	public void setUser(User u)
-	{
-		this.u = u;
-	}
-
 	public User getUser()
 	{
 		return u;
 	}
-	
+
 	public void displayMessage(MessageContainer m)
 	{
 		messages.add(m);
@@ -92,11 +112,22 @@ public class ChatController implements Initializable
 	{
 		if (event.getCode() == KeyCode.ENTER)
 		{
-			// send message
+			messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
+					new MessageWrapper(chattextfield.getText(), null, null, false, false, 0)));
+			chattextfield.setText("");
+			chatview.setPrefHeight(messages.size() * 33 + 6);
+			chatview.setMaxHeight(messages.size() * 33 + 6);
+			chatview.setMinHeight(messages.size() * 33 + 6);
+			chatview.setLayoutY(chatview.getLayoutY() - 27);
 		} else if (event.getCode() == KeyCode.ESCAPE)
 		{
 			// NOTHING
 		}
+	}
+
+	public Pane getPane()
+	{
+		return mainPane;
 	}
 
 }
