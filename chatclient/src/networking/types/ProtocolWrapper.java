@@ -21,7 +21,7 @@ public class ProtocolWrapper extends Wrapper implements Serializable
 	
 	public ProtocolWrapper(String[] s)
 	{
-		assert s.length == 2;
+		if(s.length != 2) throw new RuntimeException("Too many parameters(" + s.length + ")");
 		clientVersion = s[0];
 		protocolVersion = s[1];
 	}

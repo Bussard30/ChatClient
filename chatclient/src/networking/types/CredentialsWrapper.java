@@ -35,7 +35,7 @@ public class CredentialsWrapper extends Wrapper implements Serializable
 	 */
 	public CredentialsWrapper(String[] s)
 	{
-		assert s.length == 3;
+		if(s.length != 3) throw new RuntimeException("Too many parameters(" + s.length + ")");
 		username = s[0];
 		password = s[1];
 		token = s[2].equals("true") ? true : false;

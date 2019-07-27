@@ -84,6 +84,13 @@ public class ChatclientController implements Initializable
 	@FXML
 	Pane midPane;
 
+	/**
+	 * Pane required to remove correct pane <br>
+	 * when e.g. clicking on contacts while chat is being shown.
+	 */
+	private Pane currentMidSelection;
+	private Pane currentTopSelection;
+
 	// Panes for chat / friends / notifications
 
 	ChatController chc;
@@ -184,6 +191,8 @@ public class ChatclientController implements Initializable
 				showChat(recentcontacts.getSelectionModel().getSelectedItem());
 			}
 		});
+		currentMidSelection = midPane;
+		currentTopSelection = topPane;
 	}
 
 	private double xOffset;
@@ -305,7 +314,6 @@ public class ChatclientController implements Initializable
 		Main.getInstance().openSettings();
 	}
 
-	private Contact temp;
 
 	public void loadContacts(ObservableList<Contact> contacts)
 	{
@@ -316,7 +324,6 @@ public class ChatclientController implements Initializable
 
 	public void addContact(Contact contact)
 	{
-		temp = contact;
 		contacts.add(contact);
 		recentcontacts.setMaxHeight(contacts.size() * 46 + 4);
 	}
@@ -367,20 +374,8 @@ public class ChatclientController implements Initializable
 	{
 		Logger.info("Doing something");
 		current = 1;
-		/**
-		 * Removing old toppane and adding our new one :)
-		 */
-		ObservableList<Node> o = anchorpane.getChildren();
-		o.remove(topPane);
-		o.add(ctc.getPane());
-		ctc.getPane().setLayoutX(topPane.getLayoutX());
-		ctc.getPane().setLayoutY(topPane.getLayoutY());
-
-		o.remove(midPane);
-		o.add(cc.getPane());
-		cc.getPane().setLayoutX(midPane.getLayoutX());
-		cc.getPane().setLayoutY(midPane.getLayoutY());
-
+		replaceMidPane(cc.getPane());
+		replaceTopPane(ctc.getPane());
 		try
 		{
 			cc.addContact(new Contact(ImageIO.read(Main.class.getResource("imagecc.jpg")), "CCUser37", "Hallo."));
@@ -394,29 +389,49 @@ public class ChatclientController implements Initializable
 
 	public void showChat(Contact c)
 	{
-		Logger.info("Doing something");
+		Logger.info("Showing chat.");
 		current = 2;
-		/**
-		 * Removing old toppane and adding our new one :)
-		 */
-		ObservableList<Node> o = anchorpane.getChildren();
-		chc.getPane().setLayoutX(midPane.getLayoutX());
-		chc.getPane().setLayoutY(midPane.getLayoutY());
-		chc.getPane().setPrefWidth(midPane.getPrefWidth());
-		chc.getPane().setPrefHeight(midPane.getPrefHeight());
-		o.remove(midPane);
-		o.add(chc.getPane());
 
-		ctpc.getPane().setLayoutX(topPane.getLayoutX());
-		ctpc.getPane().setLayoutY(topPane.getLayoutY());
-		ctpc.getPane().setPrefWidth(topPane.getPrefWidth());
-		ctpc.getPane().setPrefHeight(topPane.getPrefHeight());
-		o.remove(topPane);
-		o.add(ctpc.getPane());
-		
+		replaceMidPane(chc.getPane());
+		replaceTopPane(ctpc.getPane());
+
+		currentTopSelection = ctpc.getPane();
+
 		ctpc.setProfilePic(c.getImage());
 		ctpc.setUsername(c.getName());
 
+	}
+	
+	/**
+	 * Replaces mid pane with new pane.<br>
+	 * New pane inherits bounds.
+	 * @param newPane
+	 */
+	public void replaceMidPane(Pane newPane)
+	{
+		newPane.setLayoutX(currentMidSelection.getLayoutX());
+		newPane.setLayoutY(currentMidSelection.getLayoutY());
+		newPane.setPrefWidth(currentMidSelection.getPrefWidth());
+		newPane.setPrefHeight(currentMidSelection.getPrefHeight());
+		anchorpane.getChildren().remove(currentMidSelection);
+		anchorpane.getChildren().add(newPane);
+
+		currentMidSelection = newPane;
+	}
+	
+	/**
+	 * Replaces top pane with new pane.<br>
+	 * New pane inherits bounds.
+	 * @param newPane
+	 */
+	public void replaceTopPane(Pane newPane)
+	{
+		newPane.setLayoutX(currentTopSelection.getLayoutX());
+		newPane.setLayoutY(currentTopSelection.getLayoutY());
+		newPane.setPrefWidth(currentTopSelection.getPrefWidth());
+		newPane.setPrefHeight(currentTopSelection.getPrefHeight());
+		anchorpane.getChildren().remove(currentTopSelection);
+		anchorpane.getChildren().add(newPane);
 	}
 
 }

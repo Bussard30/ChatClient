@@ -1,8 +1,10 @@
 package networking.types;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -15,8 +17,30 @@ public class AudioWrapper extends Wrapper
 	private byte[] data;
 	public AudioWrapper(String[] s)
 	{
-		assert s.length == 1;
-		data = Base64.getDecoder().decode(s[0]);
+		if(s.length != 1) throw new RuntimeException("Too many parameters(" + s.length + ")");
+		try
+		{
+			ByteArrayInputStream bi = new ByteArrayInputStream(Base64.getDecoder().decode(s[0]));
+			GZIPInputStream i = new GZIPInputStream(bi);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            for (;;) {
+                int b = i.read();
+                if (b == -1) {
+                    break;
+                } else {
+                    baos.write((byte) b);
+                }
+            }
+            //play decompressed data
+            data = baos.toByteArray();
+			bi.close();
+			i.close();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	@Override
@@ -32,7 +56,7 @@ public class AudioWrapper extends Wrapper
 	        go.close();
 	        baos.flush();
 	        baos.close();
-	        return new String[]{Base64.getEncoder().encodeToString(data)};
+	        return new String[]{Base64.getEncoder().encodeToString(baos.toByteArray())};
 		} catch (IOException e)
 		{
 			e.printStackTrace();

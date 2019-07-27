@@ -37,7 +37,7 @@ public class ProfileInfoWrapper extends Wrapper
 	 */
 	public ProfileInfoWrapper(String[] s)
 	{
-		assert s.length == 7;
+		if(s.length != 7) throw new RuntimeException("Too many parameters(" + s.length + ")");
 		Logger.info(s[4]);
 			try
 			{

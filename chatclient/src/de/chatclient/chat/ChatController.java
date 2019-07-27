@@ -67,15 +67,15 @@ public class ChatController implements Initializable
 		chatview.setMaxHeight(messages.size() * 39 + 4);
 		
 		messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
-				new MessageWrapper("Hallo", null, null, false, false, 0)));
+				new MessageWrapper("Hallo", null, null, false, false, false, 0)));
 		messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
-				new MessageWrapper("Das hier ist ein Test", null, null, false, false, 0)));
+				new MessageWrapper("Das hier ist ein Test", null, null, false, false, false, 0)));
 		messages.add(new MessageContainer(new User(null, "CCUser37", null, null, null, null, null),
-				new MessageWrapper("Ok super", null, null, false, false, 0)));
+				new MessageWrapper("Ok super", null, null, false, false, false, 0)));
 		messages.add(new MessageContainer(new User(null, "CCUser37", null, null, null, null, null),
-				new MessageWrapper("test123", null, null, false, false, 0)));
+				new MessageWrapper("test123", null, null, false, false, false, 0)));
 		messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
-				new MessageWrapper("ok funktioniert", null, null, false, false, 0)));
+				new MessageWrapper("ok funktioniert", null, null, false, false, false, 0)));
 		chatview.setLayoutY(chatview.getLayoutY() - 27);
 		chatview.setLayoutY(chatview.getLayoutY() - 27);
 		chatview.setLayoutY(chatview.getLayoutY() - 27);
@@ -113,7 +113,7 @@ public class ChatController implements Initializable
 		if (event.getCode() == KeyCode.ENTER)
 		{
 			messages.add(new MessageContainer(new User(null, "paddy", null, null, null, null, null),
-					new MessageWrapper(chattextfield.getText(), null, null, false, false, 0)));
+					new MessageWrapper(chattextfield.getText(), null, null, false, false, false, 0)));
 			chattextfield.setText("");
 			chatview.setPrefHeight(messages.size() * 33 + 6);
 			chatview.setMaxHeight(messages.size() * 33 + 6);

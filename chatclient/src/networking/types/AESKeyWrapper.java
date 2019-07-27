@@ -33,8 +33,10 @@ public class AESKeyWrapper extends Wrapper
 	 */
 	public AESKeyWrapper(String[] s)
 	{
-		assert s.length == 1;
+		if (s.length != 1)
+			throw new RuntimeException("Too many parameters(" + s.length + ")");
 		key = new SecretKeySpec(Base64.getDecoder().decode(s[0]), "AES");
+
 	}
 
 	/**

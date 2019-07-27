@@ -19,6 +19,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -155,10 +156,10 @@ public class ClientHandler
 			Logger.info("Already sent user credentials!");
 		}
 	}
-	
+
 	public void searchUsersFor(String s)
 	{
-		if(phase == NetworkPhases.COM)
+		if (phase == NetworkPhases.COM)
 		{
 			Logger.info("Getting users for current search content.");
 			try
@@ -448,7 +449,8 @@ public class ClientHandler
 			{
 				Logger.info("advance");
 				advance();
-			} else if (!networkphaseprogress.get(phase)[2] && !networkphaseprogress.get(phase)[3] && networkphaseprogress.get(phase)[0])
+			} else if (!networkphaseprogress.get(phase)[2] && !networkphaseprogress.get(phase)[3]
+					&& networkphaseprogress.get(phase)[0])
 			{
 				Logger.info("Sending protocol !");
 				send(new Request(Requests.TRSMT_PROTOCOL.getName(), Main.protocol));
@@ -821,7 +823,12 @@ public class ClientHandler
 		}
 		if (o instanceof Wrapper)
 		{
-			return ((networking.types.Wrapper) o).getStrings();
+			String[] s = ((networking.types.Wrapper) o).getStrings();
+//			for (int i = 0; i < s.length; i++)
+//			{
+//				s[i] = s[i].replace(";", "U+003B");
+//			}
+			return s;
 		}
 		if (o instanceof Key)
 		{
@@ -838,7 +845,7 @@ public class ClientHandler
 		if (o instanceof String)
 		{
 			return new String[]
-			{ (String) o };
+			{ ((String) o).replace(";", "U+003B") };
 		}
 		if (o instanceof Boolean)
 		{
@@ -913,13 +920,19 @@ public class ClientHandler
 		{
 			data[i - 2] = temp[i];
 		}
-		for(int i = 0; i < data.length; i++)
+
+		for (int i = 0; i < data.length; i++)
 		{
-			if(data[i] == "null")
+			if (data[i].equals("null"))
 			{
 				data[i] = null;
+			} else if (data[i].contains("U+003B"))
+			{
+				Logger.info("Replacing ; character");
+				data[i] = data[i].replace("U+003B", ";");
 			}
 		}
+
 		if (info[0].equals("Req"))
 		{
 			for (Requests r : Requests.values())
@@ -933,7 +946,7 @@ public class ClientHandler
 					{
 						if (r.getType().getSuperclass().equals(Wrapper.class))
 						{
-							//this is 100% safe
+							// this is 100% safe
 							return new Request(info[1],
 									Wrapper.getWrapper((Class<? extends Wrapper>) r.getType(), data));
 						}
