@@ -404,7 +404,7 @@ public class ChatclientController implements Initializable
 	
 	/**
 	 * Replaces mid pane with new pane.<br>
-	 * New pane inherits bounds.
+	 * New pane inherits bounds of mid pane.
 	 * @param newPane
 	 */
 	public void replaceMidPane(Pane newPane)
@@ -421,7 +421,7 @@ public class ChatclientController implements Initializable
 	
 	/**
 	 * Replaces top pane with new pane.<br>
-	 * New pane inherits bounds.
+	 * New pane inherits bounds of top pane.
 	 * @param newPane
 	 */
 	public void replaceTopPane(Pane newPane)
